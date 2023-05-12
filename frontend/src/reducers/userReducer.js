@@ -82,12 +82,14 @@ const profileReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
+        isUpdated: false,
         error: action.payload,
       };
 
     case userConstants.UPDATE_PROFILE_RESET:
       return {
         ...state,
+        loading: false,
         isUpdated: false,
       };
 

@@ -31,7 +31,7 @@ const UpdateProfile = () => {
     myForm.set("name", name);
     myForm.set("email", email);
     myForm.set("avatar", avatar);
-    dispatch(userAction.userRegister(myForm));
+    dispatch(userAction.updateProfile(myForm));
     alert.success(`${name}'s profile updated successfully`);
   };
 
@@ -62,9 +62,8 @@ const UpdateProfile = () => {
     }
 
     if (isUpdated) {
-      alert.success("Profile Updated Successfully");
-      // navigate("/account");
-      dispatch(userAction.loadUser);
+      dispatch(userAction.loadUser());
+      navigate("/account");
       dispatch({ type: userConstants.UPDATE_PROFILE_RESET });
     }
   }, [dispatch, error, alert, navigate, isUpdated, user, isAuthenticated]);
@@ -122,7 +121,6 @@ const UpdateProfile = () => {
                     type="submit"
                     value="Update"
                     className="updateProfileBtn"
-                    disabled={loading ? true : false}
                   />
                 </form>
               </div>

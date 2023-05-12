@@ -82,7 +82,7 @@ const userLogout = () => async (dispatch) => {
 const updateProfile = (userData) => async (dispatch) => {
   try {
     dispatch({ type: userConstants.UPDATE_PROFILE_REQUEST });
-    const config = { header: { "Content-Type": "multipart/form-data" } };
+    const config = { headers: { "Content-Type": "multipart/form-data" } };
     const { data } = await axios.put(
       "/api/v1/profile/update",
       userData,
@@ -90,7 +90,7 @@ const updateProfile = (userData) => async (dispatch) => {
     );
     dispatch({
       type: userConstants.UPDATE_PROFILE_SUCCESS,
-      payload: data.user,
+      payload: data.success,
     });
   } catch (err) {
     dispatch({
