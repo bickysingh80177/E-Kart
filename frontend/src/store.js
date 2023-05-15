@@ -13,6 +13,7 @@ const reducer = combineReducers({
   productDetails: productReducer.productDetailReducer,
   user: userReducer.loginRegisterUser,
   profile: userReducer.profileReducer,
+  forgotPassword: userReducer.forgotPasswordReducer,
 });
 
 let initialState = {};

@@ -74,9 +74,11 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   // as user was already created then we have to save the reset token in the user again
   await user.save({ validateBeforeSave: false });
 
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/password/reset/${resetToken}`;
+  // const resetPasswordUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/v1/password/reset/${resetToken}`;
+
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
   const message = `Your password reset token is:- \n\n ${resetPasswordUrl} \n\n if you not requested this email, then please ignore this message`;
 
@@ -88,7 +90,7 @@ const forgotPassword = catchAsyncErrors(async (req, res, next) => {
     });
     res.status(200).json({
       success: true,
-      message: `email sent to ${user.email} successfully`,
+      message: `Email sent to ${user.email} successfully`,
     });
   } catch (err) {
     user.resetPasswordToken = undefined;
@@ -115,7 +117,10 @@ const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   if (!user)
     return next(
-      new ErrorHandler("Reset Password token is invalid or expired", 400)
+      new ErrorHandler(
+        "Reset Password token is invalid or has been expired",
+        400
+      )
     );
 
   if (req.body.password !== req.body.confirmPassword) {

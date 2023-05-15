@@ -158,7 +158,6 @@ function Login_Register() {
                   {loginPassword && (
                     <button onClick={togglePassword} className="togglePass">
                       {visibility ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                      {/* {visibility ? <VisibilityIcon /> : <VisibilityOffIcon />} */}
                     </button>
                   )}
                 </div>
@@ -205,7 +204,7 @@ function Login_Register() {
                   />
                   {password && (
                     <button onClick={togglePassword} className="togglePass">
-                      {visibility ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      {visibility ? <VisibilityOffIcon /> : <VisibilityIcon />}
                     </button>
                   )}
                 </div>

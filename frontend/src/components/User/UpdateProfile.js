@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import "./UpdateProfile.css";
 import Loader from "../layout/Loader/Loader";
 import userAction from "../../actions/userAction";
-import userConstants from "../../constants/userConstants,";
+import userConstants from "../../constants/userConstants";
 import Metadata from "../layout/Metadata";
 
 const UpdateProfile = () => {

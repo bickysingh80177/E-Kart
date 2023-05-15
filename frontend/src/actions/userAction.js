@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 
-import userConstants from "../constants/userConstants,";
+import userConstants from "../constants/userConstants";
 
 // login
 const userLogin = (email, password) => async (dispatch) => {
@@ -100,6 +100,68 @@ const updateProfile = (userData) => async (dispatch) => {
   }
 };
 
+// Update Password
+const updatePassword = (password) => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.UPDATE_PASSWORD_REQUEST });
+    const config = { headers: { "Content-Type": "application/json" } };
+    const { data } = await axios.put(
+      "/api/v1/password/update",
+      password,
+      config
+    );
+    dispatch({
+      type: userConstants.UPDATE_PASSWORD_SUCCESS,
+      payload: data.success,
+    });
+  } catch (err) {
+    dispatch({
+      type: userConstants.UPDATE_PASSWORD_FAIL,
+      payload: err.response.data.message,
+    });
+  }
+};
+
+// Forgot Password
+const forgotPassword = (email) => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.FORGOT_PASSWORD_REQUEST });
+    const config = { headers: { "Content-Type": "application/json" } };
+    const { data } = await axios.post("/api/v1/password/forgot", email, config);
+    dispatch({
+      type: userConstants.FORGOT_PASSWORD_SUCCESS,
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: userConstants.FORGOT_PASSWORD_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Reset Password
+const resetPassword = (token, passwords) => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.RESET_PASSWORD_REQUEST });
+    const config = { headers: { "Content-Type": "application/json" } };
+    const { data } = await axios.put(
+      `/api/v1/password/reset/${token}`,
+      passwords,
+      config
+    );
+    dispatch({
+      type: userConstants.RESET_PASSWORD_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: userConstants.RESET_PASSWORD_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 // Clearing errors
 const clearError = () => async (dispatch) => {
   dispatch({ type: userConstants.CLEAR_ERRORS });
@@ -107,11 +169,14 @@ const clearError = () => async (dispatch) => {
 
 const userAction = {
   userLogin,
-  clearError,
   userRegister,
   loadUser,
   updateProfile,
   userLogout,
+  updatePassword,
+  forgotPassword,
+  resetPassword,
+  clearError,
 };
 
 export default userAction;

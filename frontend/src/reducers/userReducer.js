@@ -1,4 +1,4 @@
-import userConstants from "../constants/userConstants,";
+import userConstants from "../constants/userConstants";
 
 const loginRegisterUser = (state = { user: {} }, action) => {
   switch (action.type) {
@@ -66,12 +66,14 @@ const loginRegisterUser = (state = { user: {} }, action) => {
 const profileReducer = (state = {}, action) => {
   switch (action.type) {
     case userConstants.UPDATE_PROFILE_REQUEST:
+    case userConstants.UPDATE_PASSWORD_REQUEST:
       return {
         ...state,
         loading: true,
       };
 
     case userConstants.UPDATE_PROFILE_SUCCESS:
+    case userConstants.UPDATE_PASSWORD_SUCCESS:
       return {
         loading: false,
         ...state,
@@ -79,6 +81,7 @@ const profileReducer = (state = {}, action) => {
       };
 
     case userConstants.UPDATE_PROFILE_FAIL:
+    case userConstants.UPDATE_PASSWORD_FAIL:
       return {
         ...state,
         loading: false,
@@ -87,6 +90,7 @@ const profileReducer = (state = {}, action) => {
       };
 
     case userConstants.UPDATE_PROFILE_RESET:
+    case userConstants.UPDATE_PASSWORD_RESET:
       return {
         ...state,
         loading: false,
@@ -104,9 +108,53 @@ const profileReducer = (state = {}, action) => {
   }
 };
 
+const forgotPasswordReducer = (state = {}, action) => {
+  switch (action.type) {
+    case userConstants.FORGOT_PASSWORD_REQUEST:
+    case userConstants.RESET_PASSWORD_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+
+    case userConstants.FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
+
+    case userConstants.RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload,
+      };
+
+    case userConstants.FORGOT_PASSWORD_FAIL:
+    case userConstants.RESET_PASSWORD_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case userConstants.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const userReducer = {
   loginRegisterUser,
   profileReducer,
+  forgotPasswordReducer,
 };
 
 export default userReducer;
