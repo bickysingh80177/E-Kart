@@ -23,7 +23,7 @@ const ResetPassword = () => {
     (state) => state.forgotPassword
   );
 
-  const [newPassword, setNewPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [newPasswordVisibility, setNewPassVisibility] = useState(false);
   const [newPasswordType, setNewPasswordType] = useState(true);
@@ -45,9 +45,9 @@ const ResetPassword = () => {
   const resetPasswordSubmit = (e) => {
     e.preventDefault();
     const myForm = new FormData();
-    myForm.set("newPassword", newPassword);
+    myForm.set("password", password);
     myForm.set("confirmPassword", confirmPassword);
-    dispatch(userAction.forgotPassword(params.token, myForm));
+    dispatch(userAction.resetPassword(params.token, myForm));
   };
 
   useEffect(() => {
@@ -83,11 +83,11 @@ const ResetPassword = () => {
                     type={newPasswordType ? "password" : "text"}
                     placeholder="New Password"
                     required
-                    name="newPassword"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                  {newPassword && (
+                  {password && (
                     <button onClick={toggleNewPassword} className="togglePass">
                       {newPasswordVisibility ? (
                         <VisibilityOffIcon />
