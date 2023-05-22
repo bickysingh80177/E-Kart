@@ -39,5 +39,3 @@ router
   );
 
 exports.userRouter = router;
-
-// 1. FIXME: route for reset password

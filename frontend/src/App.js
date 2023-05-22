@@ -20,6 +20,7 @@ import UpdateProfile from "./components/User/UpdateProfile";
 import UpdatePassword from "./components/User/UpdatePassword";
 import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
+import Cart from "./components/Cart/Cart";
 
 function App() {
   // const navigate = useNavigate();
@@ -48,20 +49,6 @@ function App() {
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/login" element={<LoginRegister />} />
           <Route exact path="/account" element={<Profile />} />
-          {/* {isAuthenticated === true ? (
-          ) : (
-            <Route exact path="/login" element={<LoginRegister />} />
-          )} */}
-          {/* <ProtectedRoute exact path="/account" component={Profile} /> */}
-          {/* <Route
-            exact
-            path="/account"
-            render={(props) => {
-              if (isAuthenticated) return <Profile {...props} />;
-              else return <LoginRegister />;
-            }}
-          /> */}
-          {/* {isAuthenticated === true && ( */}
           <Route exact path="/profile/update" element={<UpdateProfile />} />
           <Route exact path="/password/update" element={<UpdatePassword />} />
           <Route exact path="/password/forgot" element={<ForgotPassword />} />
@@ -70,7 +57,7 @@ function App() {
             path="/password/reset/:token"
             element={<ResetPassword />}
           />
-          {/* )} */}
+          <Route exact path="/cart" element={<Cart />} />
         </Routes>
         <Footer />
       </BrowserRouter>
