@@ -5,6 +5,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -18,6 +19,7 @@ function UserOptions({ user }) {
 
   const [open, setOpen] = useState(false);
   const { isAuthenticated } = useSelector((state) => state.user);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const adminDashboard = () => navigate("/dashboard");
   const userAccount = () => {
@@ -28,6 +30,7 @@ function UserOptions({ user }) {
     }
   };
   const userOrders = () => navigate("/orders");
+  const userCart = () => navigate("/cart");
   const userLogout = () => {
     dispatch(userAction.userLogout());
     navigate("/");
@@ -44,6 +47,15 @@ function UserOptions({ user }) {
       icon: <PersonIcon />,
       name: "Profile",
       func: userAccount,
+    },
+    {
+      icon: (
+        <ShoppingCartIcon
+          style={{ color: cartItems.length > 0 ? "tomato" : "unset" }}
+        />
+      ),
+      name: `Cart(${cartItems.length})`,
+      func: userCart,
     },
     {
       icon: <ExitToAppIcon />,
@@ -85,6 +97,7 @@ function UserOptions({ user }) {
             icon={item.icon}
             tooltipTitle={item.name}
             onClick={item.func}
+            tooltipOpen={window.innerWidth <= 600 ? true : false}
           />
         ))}
       </SpeedDial>

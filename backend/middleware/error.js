@@ -30,6 +30,6 @@ module.exports = (err, req, res, next) => {
   res.status(err.statusCode).json({
     success: false,
     message: err.message, // returns only the error message
-    // message: err.stack, // returns the whole error stack, including where the error occeued
+    // message: err.stack, // returns the whole error stack, including where the error ocurred
   });
 };
