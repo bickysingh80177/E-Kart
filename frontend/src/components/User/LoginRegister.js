@@ -13,7 +13,7 @@ import "./LoginRegister.css";
 import Loader from "../layout/Loader/Loader";
 import userAction from "../../actions/userAction";
 
-function Login_Register() {
+const Login_Register = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
@@ -40,6 +40,10 @@ function Login_Register() {
 
   const { name, email, password } = user;
 
+  const params = new URL(document.location);
+  // console.log(params.href.split("=")[1]);
+  const redirect = params ? "/" + params.href.split("=")[1] : "/account";
+
   useEffect(() => {
     if (error) {
       alert.error(error);
@@ -47,9 +51,9 @@ function Login_Register() {
     }
 
     if (isAuthenticated) {
-      navigate("/account");
+      navigate(redirect);
     }
-  }, [dispatch, error, alert, navigate, isAuthenticated]);
+  }, [dispatch, error, alert, navigate, isAuthenticated, redirect]);
 
   // if (error) {
   //   alert.error(error);
@@ -231,6 +235,6 @@ function Login_Register() {
       )}
     </Fragment>
   );
-}
+};
 
 export default Login_Register;

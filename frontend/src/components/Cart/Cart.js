@@ -1,12 +1,16 @@
 import React, { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 
 import "./Cart.css";
 import CartItemCard from "./CartItemCard.js";
 import cartAction from "../../actions/cartAction";
+import { Typography } from "@mui/material";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
 
   const increaseQty = (id, quantity, stock) => {
@@ -25,10 +29,18 @@ const Cart = () => {
     dispatch(cartAction.removeItemFromCart(id));
   };
 
+  const checkoutHandler = () => {
+    navigate("/login?redirect=shipping");
+  };
+
   return (
     <Fragment>
       {cartItems.length === 0 ? (
-        "Cart is Empty"
+        <div className="emptyCart">
+          <RemoveShoppingCartIcon />
+          <Typography>No Product in Your Cart</Typography>
+          <Link to="/products">view products</Link>
+        </div>
       ) : (
         <Fragment>
           <div className="cartPage">
@@ -66,11 +78,17 @@ const Cart = () => {
               <div></div>
               <div className="cartGrossBox">
                 <p>Gross Total</p>
-                <p>{`₹19347`}</p>
+                <p>{`₹${cartItems.reduce(
+                  (acc, item) => acc + item.quantity * item.price,
+                  0
+                )}`}</p>
               </div>
               <div></div>
               <div className="checkoutBtn">
-                <button>Checkout</button>
+                <button onClick={() => navigate("/products")}>
+                  Keep Shopping
+                </button>
+                <button onClick={checkoutHandler}>Checkout</button>
               </div>
             </div>
           </div>

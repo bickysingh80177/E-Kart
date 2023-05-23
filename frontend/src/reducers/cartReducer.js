@@ -1,6 +1,6 @@
 import cartConstant from "../constants/cartConstants";
 
-const addToCart = (state = { cartItems: [] }, action) => {
+const addToCart = (state = { cartItems: [], shippingInfo: {} }, action) => {
   switch (action.type) {
     case cartConstant.ADD_TO_CART:
       const item = action.payload;
@@ -25,6 +25,12 @@ const addToCart = (state = { cartItems: [] }, action) => {
       return {
         ...state,
         cartItems: state.cartItems.filter((i) => i.product !== action.payload),
+      };
+
+    case cartConstant.SAVE_SHIPPING_INFO:
+      return {
+        ...state,
+        shippingInfo: action.payload,
       };
 
     default:

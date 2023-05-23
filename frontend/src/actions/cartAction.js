@@ -4,7 +4,6 @@ import cartConstant from "../constants/cartConstants";
 
 // Add to cart
 const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
-  // try {
   const { data } = await axios.get(`/api/v1/products/${id}`);
   dispatch({
     type: cartConstant.ADD_TO_CART,
@@ -18,9 +17,6 @@ const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
     },
   });
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
-  // } catch (err) {
-  //   dispatch({ payload: err.response.data.message });
-  // }
 };
 
 // Remove product from cart
@@ -32,6 +28,15 @@ const removeItemFromCart = (id) => async (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
-const cartAction = { addItemsToCart, removeItemFromCart };
+// Save Shipping Info
+const shippingInfo = (data) => async (dispatch, getState) => {
+  dispatch({
+    type: cartConstant.SAVE_SHIPPING_INFO,
+    payload: data,
+  });
+  localStorage.setItem("shippingInfo", JSON.stringify(data));
+};
+
+const cartAction = { addItemsToCart, removeItemFromCart, shippingInfo };
 
 export default cartAction;
