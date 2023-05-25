@@ -29,7 +29,7 @@ const removeItemFromCart = (id) => async (dispatch, getState) => {
 };
 
 // Save Shipping Info
-const shippingInfo = (data) => async (dispatch, getState) => {
+const saveShippingInfo = (data) => async (dispatch, getState) => {
   dispatch({
     type: cartConstant.SAVE_SHIPPING_INFO,
     payload: data,
@@ -37,6 +37,6 @@ const shippingInfo = (data) => async (dispatch, getState) => {
   localStorage.setItem("shippingInfo", JSON.stringify(data));
 };
 
-const cartAction = { addItemsToCart, removeItemFromCart, shippingInfo };
+const cartAction = { addItemsToCart, removeItemFromCart, saveShippingInfo };
 
 export default cartAction;

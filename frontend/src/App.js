@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import webFont from "webfontloader";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 import "./App.css";
 import Header from "./components/layout/Header/Header";
@@ -22,10 +23,18 @@ import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
 import Cart from "./components/Cart/Cart";
 import Shipping from "./components/Cart/Shipping";
+import ConfirmOrder from "./components/Cart/ConfirmOrder.js";
+import Payment from "./components/Cart/Payment.js";
 
 function App() {
   // const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const [stripeApiKey, setStripeApiKey] = useState("");
+
+  async function getStripeApiKey() {
+    const { data } = await axios.get("/api/v1/stripeapikey");
+    setStripeApiKey(data.stripeApiKey);
+  }
 
   useEffect(() => {
     webFont.load({
@@ -35,6 +44,7 @@ function App() {
     });
 
     store.dispatch(userAction.loadUser());
+    getStripeApiKey();
   }, []);
 
   return (
@@ -60,6 +70,8 @@ function App() {
           />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/shipping" element={<Shipping />} />
+          <Route exact path="/order/confirm" element={<ConfirmOrder />} />
+          <Route exact path="/process/payment" element={<Payment />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -25,6 +25,7 @@
     "mongoose": "^7.0.3",
     "nodemailer": "^6.9.1",
     "react-js-pagination": "^3.0.3",
+    "stripe": "^12.6.0",
     "validator": "^13.9.0"
   }
 }

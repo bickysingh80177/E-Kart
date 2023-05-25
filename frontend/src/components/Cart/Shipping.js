@@ -23,28 +23,46 @@ const Shipping = () => {
   const { isAuthenticated, loading } = useSelector((state) => state.user);
   const { shippingInfo } = useSelector((state) => state.cart);
 
-  const [address, setAddress] = useState(shippingInfo.address);
-  const [city, setCity] = useState(shippingInfo.city);
-  const [state, setState] = useState(shippingInfo.state);
-  const [country, setCountry] = useState(shippingInfo.country);
-  const [pinCode, setpinCode] = useState(shippingInfo.pinCode);
-  const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo);
+  const [address, setAddress] = useState(shippingInfo.address || "");
+  const [city, setCity] = useState(shippingInfo.city || "");
+  const [state, setState] = useState(shippingInfo.state || "");
+  const [country, setCountry] = useState(shippingInfo.country || "");
+  const [pinCode, setPinCode] = useState(shippingInfo.pinCode || "");
+  const [phoneNo, setPhoneNo] = useState(shippingInfo.phoneNo || "");
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/login");
   }, [isAuthenticated, navigate]);
 
-  const shippingSubmit = () => {};
+  const shippingSubmit = (e) => {
+    e.preventDefault();
+
+    if (phoneNo.length < 10 || phoneNo.length > 10) {
+      alert.error("Phone Number should be of 10 digits");
+      return;
+    }
+    dispatch(
+      cartAction.saveShippingInfo({
+        address,
+        city,
+        state,
+        country,
+        pinCode,
+        phoneNo,
+      })
+    );
+    navigate("/order/confirm");
+  };
 
   return (
     <Fragment>
       <Metadata title="Shipping Details" />
-      <CheckoutSteps activeStep={2} />
       {loading ? (
         <Loader />
       ) : (
         isAuthenticated === true && (
           <Fragment>
+            <CheckoutSteps activeStep={0} />
             <div className="shippingContainer">
               <div className="shippingBox">
                 <h2 className="shippingHeading">Shipping Details</h2>
@@ -80,7 +98,7 @@ const Shipping = () => {
                       placeholder="Pin Code"
                       required
                       value={pinCode}
-                      onChange={(e) => setpinCode(e.target.value)}
+                      onChange={(e) => setPinCode(e.target.value)}
                     />
                   </div>
                   <div>
