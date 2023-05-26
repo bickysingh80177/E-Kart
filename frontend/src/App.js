@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import webFont from "webfontloader";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 import "./App.css";
 import Header from "./components/layout/Header/Header";
@@ -16,7 +18,7 @@ import store from "./store";
 import userAction from "./actions/userAction";
 import UserOptions from "./components/layout/Header/UserOptions";
 import Profile from "./components/User/Profile";
-import ProtectedRoute from "./components/Route/ProtectedRoute";
+// import ProtectedRoute from "./components/Route/ProtectedRoute";
 import UpdateProfile from "./components/User/UpdateProfile";
 import UpdatePassword from "./components/User/UpdatePassword";
 import ForgotPassword from "./components/User/ForgotPassword";
@@ -31,10 +33,10 @@ function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
 
-  async function getStripeApiKey() {
+  const getStripeApiKey = async () => {
     const { data } = await axios.get("/api/v1/stripeapikey");
     setStripeApiKey(data.stripeApiKey);
-  }
+  };
 
   useEffect(() => {
     webFont.load({
@@ -46,6 +48,8 @@ function App() {
     store.dispatch(userAction.loadUser());
     getStripeApiKey();
   }, []);
+
+  console.log(stripeApiKey);
 
   return (
     <div>
@@ -71,7 +75,17 @@ function App() {
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/shipping" element={<Shipping />} />
           <Route exact path="/order/confirm" element={<ConfirmOrder />} />
-          <Route exact path="/process/payment" element={<Payment />} />
+          {stripeApiKey && (
+            <Route
+              exact
+              path="/process/payment"
+              element={
+                <Elements stripe={loadStripe(stripeApiKey)}>
+                  <Payment stripeKey={stripeApiKey} />
+                </Elements>
+              }
+            />
+          )}
         </Routes>
         <Footer />
       </BrowserRouter>
