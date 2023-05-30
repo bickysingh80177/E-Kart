@@ -51,13 +51,16 @@
     font: 300 0.9vmax "Roboto";
     width: 100%;
     padding: 0.8vmax;
+    margin: 1vmax 0;
     cursor: pointer;
     transition: all 0.5s;
     outline: none;
 }
 
 .paymentFormBtn:hover {
-    background-color: rgba(179, 66, 46);
+    background-color: rgb(241, 185, 175);
+    color: rgb(53, 53, 53);
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 600px) {

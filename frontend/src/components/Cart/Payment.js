@@ -14,13 +14,12 @@ import {
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import EventIcon from "@mui/icons-material/Event";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 
 import "./Payment.css";
 import CheckoutSteps from "./CheckoutSteps";
 import Metadata from "../layout/Metadata";
 import Loader from "../layout/Loader/Loader";
+import orderAction from "../../actions/orderAction";
 
 const Payment = ({ stripeKey }) => {
   const navigate = useNavigate();
@@ -31,15 +30,28 @@ const Payment = ({ stripeKey }) => {
   const payBtn = useRef(null);
   const { user, loading, isAuthenticated } = useSelector((state) => state.user);
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
-  //   const { error } = useSelector((state) => state.newOrder);
+  const { error } = useSelector((state) => state.newOrder);
 
   useEffect(() => {
     if (!isAuthenticated) navigate("/login");
-  }, [isAuthenticated, navigate]);
+    if (error) {
+      alert.error(error);
+      dispatch(orderAction.clearErrors());
+    }
+  }, [isAuthenticated, navigate, dispatch, error, alert]);
 
   const orderInfo = JSON.parse(sessionStorage.getItem("orderInfo"));
   const paymentData = {
     amount: Math.round(orderInfo.totalPrice * 100),
+  };
+
+  const order = {
+    shippingInfo,
+    orderItems: cartItems,
+    itemsPrice: orderInfo.subtotal,
+    taxPrice: orderInfo.tax,
+    shippingPrice: orderInfo.shippingCharges,
+    totalPrice: orderInfo.totalPrice,
   };
 
   const submitHandler = async (e) => {
@@ -79,9 +91,14 @@ const Payment = ({ stripeKey }) => {
         alert.error(result.error.message);
       } else {
         if (result.paymentIntent.status === "succeeded") {
+          order.paymentInfo = {
+            id: result.paymentIntent.id,
+            status: result.paymentIntent.status,
+          };
+          dispatch(orderAction.createOrder(order));
           navigate("/success");
         } else {
-          alert.error("There's some issue while processing payment.");
+          alert.error("There's some issue occurred while processing payment.");
         }
       }
     } catch (error) {
@@ -92,7 +109,6 @@ const Payment = ({ stripeKey }) => {
 
   return (
     <Fragment>
-      {/* <Elements stripe={loadStripe(stripeKey)}> */}
       {loading ? (
         <Loader />
       ) : (
@@ -121,12 +137,17 @@ const Payment = ({ stripeKey }) => {
                   ref={payBtn}
                   className="paymentFormBtn"
                 />
+                <input
+                  type="submit"
+                  value={`Cancel Payment`}
+                  className="paymentFormBtn"
+                  onClick={() => navigate("/cart")}
+                />
               </form>
             </div>
           </Fragment>
         )
       )}
-      {/* </Elements> */}
     </Fragment>
   );
 };

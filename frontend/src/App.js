@@ -25,8 +25,8 @@ import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
 import Cart from "./components/Cart/Cart";
 import Shipping from "./components/Cart/Shipping";
-import ConfirmOrder from "./components/Cart/ConfirmOrder.js";
-import Payment from "./components/Cart/Payment.js";
+import ConfirmOrder from "./components/Cart/ConfirmOrder";
+import Payment from "./components/Cart/Payment";
 
 function App() {
   // const navigate = useNavigate();
@@ -48,8 +48,6 @@ function App() {
     store.dispatch(userAction.loadUser());
     getStripeApiKey();
   }, []);
-
-  console.log(stripeApiKey);
 
   return (
     <div>
