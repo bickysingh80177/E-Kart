@@ -1,13 +1,13 @@
-const orderModel = require("../models/orderModel");
+const model = require("../models/orderModel");
 const productModel = require("../models/productModel");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/asyncError");
 
-const Order = orderModel.orderModel;
+const Order = model.orderModel;
 const Product = productModel.productModel;
 
 // Create new order
-const newOrder = catchAsyncErrors(async (req, res, next) => {
+const placeNewOrder = catchAsyncErrors(async (req, res, next) => {
   const {
     shippingInfo,
     orderItems,
@@ -128,7 +128,7 @@ const deleteOrder = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.orderController = {
-  newOrder,
+  placeNewOrder,
   getSingleOrder,
   userOrder,
   getAllOrders,

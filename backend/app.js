@@ -21,12 +21,12 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 
+// middleware for error
+app.use(errorMiddleware);
+
 app.use("/api/v1", productRouter);
 app.use("/api/v1", userRouter);
 app.use("/api/v1", orderRouter);
 app.use("/api/v1", paymentRouter);
-
-// middleware for error
-app.use(errorMiddleware);
 
 module.exports = app;

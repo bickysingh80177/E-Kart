@@ -6,7 +6,7 @@ const { isAuthenticatedUser, authorizeRoles } = require("../middleware/auth");
 const router = express.Router();
 
 router
-  .post("/order/new", isAuthenticatedUser, orderController.newOrder)
+  .post("/order/new", isAuthenticatedUser, orderController.placeNewOrder)
   .get("/order/me", isAuthenticatedUser, orderController.userOrder)
   .get("/order/:id", isAuthenticatedUser, orderController.getSingleOrder)
   .get(

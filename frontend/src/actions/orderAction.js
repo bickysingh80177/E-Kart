@@ -15,7 +15,7 @@ const createOrder = (order) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios("/api/v1/order/new", order, config);
+    const { data } = await axios.post("/api/v1/order/new", order, config);
 
     dispatch({
       type: orderConstants.CREATE_ORDER_SUCCESS,
