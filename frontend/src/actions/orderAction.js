@@ -29,11 +29,25 @@ const createOrder = (order) => async (dispatch, getState) => {
   }
 };
 
+// my orders
+const myOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: orderConstants.MY_ORDERS_REQUEST });
+    const { data } = await axios.get("api/v1/order/me");
+    dispatch({ type: orderConstants.MY_ORDERS_SUCCESS, payload: data.orders });
+  } catch (err) {
+    dispatch({
+      type: orderConstants.MY_ORDERS_FAIL,
+      payload: err.response.data.message,
+    });
+  }
+};
+
 // Clear Errors
 const clearErrors = () => async (dispatch) => {
   dispatch({ type: orderConstants.CLEAR_ERRORS });
 };
 
-const orderAction = { createOrder, clearErrors };
+const orderAction = { createOrder, myOrders, clearErrors };
 
 export default orderAction;

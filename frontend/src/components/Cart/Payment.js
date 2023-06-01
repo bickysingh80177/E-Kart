@@ -111,42 +111,42 @@ const Payment = ({ stripeKey }) => {
     <Fragment>
       {loading ? (
         <Loader />
+      ) : isAuthenticated === false ? (
+        navigate("/login")
       ) : (
-        isAuthenticated === true && (
-          <Fragment>
-            <Metadata title="Payment" />
-            <CheckoutSteps activeStep={2} />
-            <div className="paymentContainer">
-              <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
-                <Typography>Card Info</Typography>
-                <div>
-                  <CreditCardIcon />
-                  <CardNumberElement className="paymentInput" />
-                </div>
-                <div>
-                  <EventIcon />
-                  <CardExpiryElement className="paymentInput" />
-                </div>
-                <div>
-                  <VpnKeyIcon />
-                  <CardCvcElement className="paymentInput" />
-                </div>
-                <input
-                  type="submit"
-                  value={`Pay ₹${orderInfo?.totalPrice}`}
-                  ref={payBtn}
-                  className="paymentFormBtn"
-                />
-                <input
-                  type="submit"
-                  value={`Cancel Payment`}
-                  className="paymentFormBtn"
-                  onClick={() => navigate("/cart")}
-                />
-              </form>
-            </div>
-          </Fragment>
-        )
+        <Fragment>
+          <Metadata title="Payment" />
+          <CheckoutSteps activeStep={2} />
+          <div className="paymentContainer">
+            <form className="paymentForm" onSubmit={(e) => submitHandler(e)}>
+              <Typography>Card Info</Typography>
+              <div>
+                <CreditCardIcon />
+                <CardNumberElement className="paymentInput" />
+              </div>
+              <div>
+                <EventIcon />
+                <CardExpiryElement className="paymentInput" />
+              </div>
+              <div>
+                <VpnKeyIcon />
+                <CardCvcElement className="paymentInput" />
+              </div>
+              <input
+                type="submit"
+                value={`Pay ₹${orderInfo?.totalPrice}`}
+                ref={payBtn}
+                className="paymentFormBtn"
+              />
+              <input
+                type="submit"
+                value={`Cancel Payment`}
+                className="paymentFormBtn"
+                onClick={() => navigate("/cart")}
+              />
+            </form>
+          </div>
+        </Fragment>
       )}
     </Fragment>
   );

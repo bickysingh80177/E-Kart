@@ -28,6 +28,7 @@ import Shipping from "./components/Cart/Shipping";
 import ConfirmOrder from "./components/Cart/ConfirmOrder";
 import Payment from "./components/Cart/Payment";
 import OrderSuccess from "./components/Cart/OrderSuccess";
+import MyOrders from "./components/Order/MyOrders.js";
 
 function App() {
   // const navigate = useNavigate();
@@ -86,6 +87,7 @@ function App() {
             />
           )}
           <Route exact path="/success" element={<OrderSuccess />} />
+          <Route exact path="/orders" element={<MyOrders />} />
         </Routes>
         <Footer />
       </BrowserRouter>

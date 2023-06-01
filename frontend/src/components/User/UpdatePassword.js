@@ -78,96 +78,90 @@ const UpdatePassword = () => {
     <Fragment>
       {loading ? (
         <Loader />
+      ) : isAuthenticated === false ? (
+        navigate("/login")
       ) : (
-        isAuthenticated === true && (
-          <Fragment>
-            <Metadata title="Update Password" />
-            <div className="updatePasswordContainer">
-              <div className="updatePasswordBox">
-                <h2 className="updatePasswordHeading">Update Password</h2>
-                <form
-                  className="updatePasswordForm"
-                  onSubmit={updatePasswordSubmit}
-                >
-                  <div className="registerPassword">
-                    <VpnKeyIcon />
-                    <input
-                      type={oldPasswordType ? "password" : "text"}
-                      placeholder="Old Password"
-                      required
-                      name="oldPassword"
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                    />
-                    {oldPassword && (
-                      <button
-                        onClick={toggleOldPassword}
-                        className="togglePass"
-                      >
-                        {oldPasswordVisibility ? (
-                          <VisibilityOffIcon />
-                        ) : (
-                          <VisibilityIcon />
-                        )}
-                      </button>
-                    )}
-                  </div>
-                  <div className="registerPassword">
-                    <LockOpenIcon />
-                    <input
-                      type={newPasswordType ? "password" : "text"}
-                      placeholder="New Password"
-                      required
-                      name="newPassword"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    {newPassword && (
-                      <button
-                        onClick={toggleNewPassword}
-                        className="togglePass"
-                      >
-                        {newPasswordVisibility ? (
-                          <VisibilityOffIcon />
-                        ) : (
-                          <VisibilityIcon />
-                        )}
-                      </button>
-                    )}
-                  </div>
-                  <div className="registerPassword">
-                    <LockIcon />
-                    <input
-                      type={confPasswordType ? "password" : "text"}
-                      placeholder="Confirm Password"
-                      required
-                      name="confirmPassword"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                    {confirmPassword && (
-                      <button
-                        onClick={toggleConfirmPassword}
-                        className="togglePass"
-                      >
-                        {confPassVisibility ? (
-                          <VisibilityOffIcon />
-                        ) : (
-                          <VisibilityIcon />
-                        )}
-                      </button>
-                    )}
-                  </div>
+        <Fragment>
+          <Metadata title="Update Password" />
+          <div className="updatePasswordContainer">
+            <div className="updatePasswordBox">
+              <h2 className="updatePasswordHeading">Update Password</h2>
+              <form
+                className="updatePasswordForm"
+                onSubmit={updatePasswordSubmit}
+              >
+                <div className="registerPassword">
+                  <VpnKeyIcon />
                   <input
-                    type="submit"
-                    value="Change Password"
-                    className="updatePasswordBtn"
+                    type={oldPasswordType ? "password" : "text"}
+                    placeholder="Old Password"
+                    required
+                    name="oldPassword"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
                   />
-                </form>
-              </div>
+                  {oldPassword && (
+                    <button onClick={toggleOldPassword} className="togglePass">
+                      {oldPasswordVisibility ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </button>
+                  )}
+                </div>
+                <div className="registerPassword">
+                  <LockOpenIcon />
+                  <input
+                    type={newPasswordType ? "password" : "text"}
+                    placeholder="New Password"
+                    required
+                    name="newPassword"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  {newPassword && (
+                    <button onClick={toggleNewPassword} className="togglePass">
+                      {newPasswordVisibility ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </button>
+                  )}
+                </div>
+                <div className="registerPassword">
+                  <LockIcon />
+                  <input
+                    type={confPasswordType ? "password" : "text"}
+                    placeholder="Confirm Password"
+                    required
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  {confirmPassword && (
+                    <button
+                      onClick={toggleConfirmPassword}
+                      className="togglePass"
+                    >
+                      {confPassVisibility ? (
+                        <VisibilityOffIcon />
+                      ) : (
+                        <VisibilityIcon />
+                      )}
+                    </button>
+                  )}
+                </div>
+                <input
+                  type="submit"
+                  value="Change Password"
+                  className="updatePasswordBtn"
+                />
+              </form>
             </div>
-          </Fragment>
-        )
+          </div>
+        </Fragment>
       )}
     </Fragment>
   );

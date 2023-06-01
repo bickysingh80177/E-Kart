@@ -48,8 +48,6 @@ const UpdateProfile = () => {
   };
 
   useEffect(() => {
-    if (!isAuthenticated) navigate("/login");
-
     if (user) {
       setName(user.name);
       setEmail(user.email);
@@ -72,61 +70,61 @@ const UpdateProfile = () => {
     <Fragment>
       {loading ? (
         <Loader />
+      ) : isAuthenticated === false ? (
+        navigate("/login")
       ) : (
-        isAuthenticated === true && (
-          <Fragment>
-            <Metadata title="Update Profile" />
-            <div className="updateProfileContainer">
-              <div className="updateProfileBox">
-                <h2 className="updateProfileHeading">Update Profile</h2>
-                <form
-                  className="updateProfileForm"
-                  encType="multipart/form-data"
-                  onSubmit={updateProfileSubmit}
-                >
-                  <div className="updateProfileName">
-                    <TagFacesIcon />
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      required
-                      name="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </div>
-                  <div className="updateProfileEmail">
-                    <MailOutlineIcon />
-                    <input
-                      type="email"
-                      placeholder="Email"
-                      required
-                      name="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="updateProfileImage">
-                    <img src={avatarPreview} alt="Avatar Preview" />
-                    <input
-                      type="file"
-                      name="avatar"
-                      accept="image/"
-                      onChange={updateProfileDataChange}
-                      style={{ padding: "0", display: "flex" }}
-                    />
-                  </div>
+        <Fragment>
+          <Metadata title="Update Profile" />
+          <div className="updateProfileContainer">
+            <div className="updateProfileBox">
+              <h2 className="updateProfileHeading">Update Profile</h2>
+              <form
+                className="updateProfileForm"
+                encType="multipart/form-data"
+                onSubmit={updateProfileSubmit}
+              >
+                <div className="updateProfileName">
+                  <TagFacesIcon />
                   <input
-                    type="submit"
-                    value="Update"
-                    className="updateProfileBtn"
+                    type="text"
+                    placeholder="Name"
+                    required
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
-                </form>
-              </div>
+                </div>
+                <div className="updateProfileEmail">
+                  <MailOutlineIcon />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    required
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+
+                <div className="updateProfileImage">
+                  <img src={avatarPreview} alt="Avatar Preview" />
+                  <input
+                    type="file"
+                    name="avatar"
+                    accept="image/"
+                    onChange={updateProfileDataChange}
+                    style={{ padding: "0", display: "flex" }}
+                  />
+                </div>
+                <input
+                  type="submit"
+                  value="Update"
+                  className="updateProfileBtn"
+                />
+              </form>
             </div>
-          </Fragment>
-        )
+          </div>
+        </Fragment>
       )}
     </Fragment>
   );

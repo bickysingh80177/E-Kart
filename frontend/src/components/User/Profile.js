@@ -11,45 +11,41 @@ const Profile = () => {
 
   const { user, loading, isAuthenticated } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    if (!isAuthenticated) navigate("/login");
-  }, [isAuthenticated, navigate]);
-
   return (
     <Fragment>
       {loading ? (
         <Loader />
+      ) : isAuthenticated === false ? (
+        navigate("/login")
       ) : (
-        isAuthenticated === true && (
-          <Fragment>
-            <Metadata title={`${user?.name}'s Profile`} />
-            <div className="profileContainer">
+        <Fragment>
+          <Metadata title={`${user?.name}'s Profile`} />
+          <div className="profileContainer">
+            <div>
+              <h1>{`${user?.name}'s Profile`}</h1>
+              <img src={user?.avatar?.url} alt={user?.name} />
+              <Link to="/profile/update">Edit Profile</Link>
+            </div>
+            <div>
               <div>
-                <h1>{`${user?.name}'s Profile`}</h1>
-                <img src={user?.avatar?.url} alt={user?.name} />
-                <Link to="/profile/update">Edit Profile</Link>
+                <h4>Full Name</h4>
+                <p>{user?.name}</p>
               </div>
               <div>
-                <div>
-                  <h4>Full Name</h4>
-                  <p>{user?.name}</p>
-                </div>
-                <div>
-                  <h4>Email</h4>
-                  <p>{user?.email}</p>
-                </div>
-                <div>
-                  <h4>Joined On</h4>
-                  <p>{String(user?.createdAt).substr(0, 10)}</p>
-                </div>
-                <div>
-                  <Link to="/orders">My Orders</Link>
-                  <Link to="/password/update">Change Password</Link>
-                </div>
+                <h4>Email</h4>
+                <p>{user?.email}</p>
+              </div>
+              <div>
+                <h4>Joined On</h4>
+                <p>{String(user?.createdAt).substr(0, 10)}</p>
+              </div>
+              <div>
+                <Link to="/orders">My Orders</Link>
+                <Link to="/password/update">Change Password</Link>
               </div>
             </div>
-          </Fragment>
-        )
+          </div>
+        </Fragment>
       )}
     </Fragment>
   );
