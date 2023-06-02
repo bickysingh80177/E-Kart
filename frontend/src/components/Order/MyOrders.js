@@ -18,8 +18,61 @@ const MyOrders = () => {
 
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const { loading, error, orders } = useSelector((state) => state.myOrders);
-  const columns = [];
+  const columns = [
+    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+    {
+      field: "status",
+      headerName: "Status",
+      minWidth: 150,
+      flex: 0.5,
+      cellClassName: (params) => {
+        return params.formattedValue === "Processing"
+          ? "redColor"
+          : "greenColor";
+      },
+    },
+    {
+      field: "itemsQty",
+      headerName: "Item Qty",
+      type: "number",
+      minWidth: 150,
+      flex: 0.3,
+    },
+    {
+      field: "amount",
+      headerName: "Amount",
+      type: "number",
+      minWidth: 270,
+      flex: 0.5,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 0.3,
+      minWidth: 150,
+      type: "number",
+      sortable: false,
+      renderCell: (params) => {
+        // console.log(params.getValue(params.id, "id"));
+        return (
+          <Link to={`/order/${params.id}`}>
+            <LaunchIcon />
+          </Link>
+        );
+      },
+    },
+  ];
   const rows = [];
+
+  orders &&
+    orders.forEach((item, index) => {
+      rows.push({
+        itemsQty: item.orderItems.length,
+        id: item._id,
+        status: item.orderStatus,
+        amount: item.totalPrice,
+      });
+    });
 
   useEffect(() => {
     if (error) {

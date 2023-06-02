@@ -23,7 +23,7 @@ const OrderSuccess = () => {
           <div className="orderSuccess">
             <CheckCircleIcon />
             <Typography>Your Order has been placed successfully</Typography>
-            <Link to="/order/me">View Orders</Link>
+            <Link to="/order">View Orders</Link>
           </div>
         </Fragment>
       )}

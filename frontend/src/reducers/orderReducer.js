@@ -61,6 +61,37 @@ const myOrders = (state = { orders: [] }, action) => {
   }
 };
 
-const orderReducer = { newOrder, myOrders };
+// order detail reducer
+const orderDetails = (state = { order: {} }, action) => {
+  switch (action.type) {
+    case orderConstants.ORDER_DETAILS_REQUEST:
+      return {
+        loading: true,
+      };
+
+    case orderConstants.ORDER_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        order: action.payload,
+      };
+
+    case orderConstants.ORDER_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    case orderConstants.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const orderReducer = { newOrder, myOrders, orderDetails };
 
 export default orderReducer;

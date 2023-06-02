@@ -20,6 +20,7 @@ const reducer = combineReducers({
   cart: cartReducer.addToCart,
   newOrder: orderReducer.newOrder,
   myOrders: orderReducer.myOrders,
+  orderDetails: orderReducer.orderDetails,
 });
 
 let initialState = {
