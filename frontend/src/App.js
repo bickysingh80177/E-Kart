@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 import webFont from "webfontloader";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -28,7 +28,8 @@ import Shipping from "./components/Cart/Shipping";
 import ConfirmOrder from "./components/Cart/ConfirmOrder";
 import Payment from "./components/Cart/Payment";
 import OrderSuccess from "./components/Cart/OrderSuccess";
-import MyOrders from "./components/Order/MyOrders.js";
+import MyOrders from "./components/Order/MyOrders";
+import OrderDetails from "./components/Order/OrderDetails";
 
 function App() {
   // const navigate = useNavigate();
@@ -74,7 +75,6 @@ function App() {
           />
           <Route exact path="/cart" element={<Cart />} />
           <Route exact path="/shipping" element={<Shipping />} />
-          <Route exact path="/order/confirm" element={<ConfirmOrder />} />
           {stripeApiKey && (
             <Route
               exact
@@ -88,6 +88,8 @@ function App() {
           )}
           <Route exact path="/success" element={<OrderSuccess />} />
           <Route exact path="/orders" element={<MyOrders />} />
+          <Route exact path="/order/confirm" element={<ConfirmOrder />} />
+          <Route exact path="/orders/:id" element={<OrderDetails />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -25,10 +25,10 @@ const MyOrders = () => {
       headerName: "Status",
       minWidth: 150,
       flex: 0.5,
-      cellClassName: (params) => {
-        return params.formattedValue === "Processing"
-          ? "redColor"
-          : "greenColor";
+      getCellClassName: (params) => {
+        console.log(params.formattedValue);
+        if (params.formattedValue === "Processing") return "greenColor";
+        else return "redColor";
       },
     },
     {
@@ -55,7 +55,7 @@ const MyOrders = () => {
       renderCell: (params) => {
         // console.log(params.getValue(params.id, "id"));
         return (
-          <Link to={`/order/${params.id}`}>
+          <Link to={`/orders/${params.id}`}>
             <LaunchIcon />
           </Link>
         );

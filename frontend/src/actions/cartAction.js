@@ -16,7 +16,10 @@ const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
       quantity,
     },
   });
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+  await axios.localStorage.setItem(
+    "cartItems",
+    JSON.stringify(getState().cart.cartItems)
+  );
 };
 
 // Remove product from cart

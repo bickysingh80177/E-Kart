@@ -30,6 +30,10 @@ const placeNewOrder = catchAsyncErrors(async (req, res, next) => {
     user: req.user._id,
   });
 
+  order.orderItems.forEach(async (o) => {
+    await updateStock(o.product, o.quantity);
+  });
+
   res.status(201).json({
     success: true,
     order,
