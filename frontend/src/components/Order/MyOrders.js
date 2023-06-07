@@ -25,11 +25,10 @@ const MyOrders = () => {
       headerName: "Status",
       minWidth: 150,
       flex: 0.5,
-      getCellClassName: (params) => {
-        console.log(params.formattedValue);
-        if (params.formattedValue === "Processing") return "greenColor";
-        else return "redColor";
-      },
+      // cellClassName: (params) => {
+      //   if (params.formattedValue === "Processing") return "greenColor";
+      //   else return "redColor";
+      // },
     },
     {
       field: "itemsQty",
@@ -100,6 +99,14 @@ const MyOrders = () => {
               disableSelectionOnClick
               className="myOrdersTable"
               autoHeight
+              // getCellClassName={(params) => {
+              //   if (params.field === "status") {
+              //     if (params.formattedValue === "Processing") {
+              //       console.log("Processing");
+              //       return "redColor";
+              //     } else return "greenColor";
+              //   }
+              // }}
             />
           </div>
         </Fragment>
