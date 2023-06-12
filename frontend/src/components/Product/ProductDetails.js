@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { useSelector, useDispatch } from "react-redux";
-import ReactStars from "react-rating-stars-component";
 import { useParams } from "react-router-dom";
 import { useAlert } from "react-alert";
 import Dialog from "@mui/material/Dialog";
@@ -92,12 +91,9 @@ const ProductDetails = () => {
   }, [dispatch, id, alert, reviewError, success, error]);
 
   const options = {
-    edit: false,
-    color: "rgba(20, 20, 20, 0.1)",
-    activeColor: "tomato",
-    size: window.innerWidth < 600 ? 20 : 25,
     value: product.ratings,
-    isHalf: true,
+    readOnly: true,
+    precision: 0.5,
   };
 
   return (
@@ -145,8 +141,10 @@ const ProductDetails = () => {
                 <p>Product # {product._id}</p>
               </div>
               <div className="detailsBlock-2">
-                <ReactStars {...options} />
-                <span>({product.numOfReviews} Reviews)</span>
+                <Rating {...options} />
+                <span className="detailsBlock-2-span">
+                  ({product.numOfReviews} Reviews)
+                </span>
               </div>
               <div className="detailsBlock-3">
                 <h1>₹ {product.price}</h1>

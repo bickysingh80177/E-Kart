@@ -21,7 +21,7 @@ function UserOptions({ user }) {
   const { isAuthenticated } = useSelector((state) => state.user);
   const { cartItems } = useSelector((state) => state.cart);
 
-  const adminDashboard = () => navigate("/dashboard");
+  const adminDashboard = () => navigate("/admin/dashboard");
   const userAccount = () => {
     if (isAuthenticated) {
       navigate("/account");

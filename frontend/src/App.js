@@ -30,6 +30,7 @@ import Payment from "./components/Cart/Payment";
 import OrderSuccess from "./components/Cart/OrderSuccess";
 import MyOrders from "./components/Order/MyOrders";
 import OrderDetails from "./components/Order/OrderDetails";
+import Dashboard from "./components/admin/Dashboard.js";
 
 function App() {
   // const navigate = useNavigate();
@@ -90,6 +91,8 @@ function App() {
           <Route exact path="/orders" element={<MyOrders />} />
           <Route exact path="/order/confirm" element={<ConfirmOrder />} />
           <Route exact path="/orders/:id" element={<OrderDetails />} />
+          {/* admin routes */}
+          <Route exact path="/admin/dashboard" element={<Dashboard />} />
         </Routes>
         <Footer />
       </BrowserRouter>
