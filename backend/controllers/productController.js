@@ -12,9 +12,8 @@ const createProduct = catchAsyncErrors(async (req, res) => {
   res.status(200).json({ success: true, product });
 });
 
+// Get All Products
 const getAllProducts = catchAsyncErrors(async (req, res, next) => {
-  // return next(new ErrorHandler("temp error", 500));
-
   const resultPerPage = 8;
   const productCount = await Product.countDocuments();
   const apiFeature = new ApiFeatures(Product.find(), req.query);
@@ -29,6 +28,17 @@ const getAllProducts = catchAsyncErrors(async (req, res, next) => {
     productCount,
     resultPerPage,
     filteredProductsCount,
+  });
+});
+
+// Get All Products - Admin
+const getAdminProduct = catchAsyncErrors(async (req, res, next) => {
+  const products = await Product.find();
+  // console.log(products);
+
+  res.status(200).json({
+    success: true,
+    products,
   });
 });
 
@@ -165,6 +175,7 @@ const deleteProductReview = catchAsyncErrors(async (req, res, next) => {
 
 exports.productController = {
   getAllProducts,
+  getAdminProduct,
   getProduct,
   createProduct,
   updateProduct,

@@ -3,7 +3,7 @@ import axios from "axios";
 import productConstants from "../constants/productConstants";
 
 // get all products
-export const getProducts =
+const getProducts =
   (
     keyword = "",
     currentPage = 1,
@@ -38,7 +38,26 @@ export const getProducts =
     }
   };
 
-export const getProductDetails = (id) => async (dispatch) => {
+// get all products - Admin
+const getAdminProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: productConstants.ADMIN_PRODUCT_REQUESTS });
+    const { data } = await axios.get("/api/v1/admin/products");
+    console.log("getAdminProducts", data);
+    dispatch({
+      type: productConstants.ADMIN_PRODUCT_SUCCESS,
+      payload: data.products,
+    });
+  } catch (err) {
+    dispatch({
+      type: productConstants.ADMIN_PRODUCT_FAIL,
+      payload: err.response.data.message,
+    });
+  }
+};
+
+// get product details
+const getProductDetails = (id) => async (dispatch) => {
   try {
     dispatch({
       type: productConstants.PRODUCT_DETAILS_REQUESTS,
@@ -60,12 +79,17 @@ export const getProductDetails = (id) => async (dispatch) => {
 };
 
 // clearing all errors
-export const clearErrors = () => async (dispatch) => {
+const clearErrors = () => async (dispatch) => {
   dispatch({
     type: productConstants.CLEAR_ERRORS,
   });
 };
 
-// const productActions = { getProduct, clearErrors };
+const productAction = {
+  getProducts,
+  getAdminProducts,
+  getProductDetails,
+  clearErrors,
+};
 
-// export default productActions;
+export default productAction;

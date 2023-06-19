@@ -26,6 +26,13 @@ router
     authorizeRoles("admin"),
     productController.deleteProduct
   );
+
+router.get(
+  "/admin/products",
+  isAuthenticatedUser,
+  authorizeRoles("admin"),
+  productController.getAdminProduct
+);
 router.put(
   "/review",
   isAuthenticatedUser,

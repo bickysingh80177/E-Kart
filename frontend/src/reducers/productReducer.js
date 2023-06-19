@@ -3,6 +3,7 @@ import productConstants from "../constants/productConstants";
 const allProductsReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case productConstants.ALL_PRODUCT_REQUESTS:
+    case productConstants.ADMIN_PRODUCT_REQUESTS:
       return {
         loading: true,
         products: [],
@@ -17,7 +18,14 @@ const allProductsReducer = (state = { products: [] }, action) => {
         filteredProductsCount: action.payload.filteredProductsCount,
       };
 
+    case productConstants.ADMIN_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        products: action.payload,
+      };
+
     case productConstants.ALL_PRODUCT_FAIL:
+    case productConstants.ADMIN_PRODUCT_FAIL:
       return {
         loading: false,
         error: action.payload,

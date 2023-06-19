@@ -6,7 +6,7 @@ import Pagination from "react-js-pagination";
 import { Typography, Slider } from "@mui/material";
 
 import "./Products.css";
-import { clearErrors, getProducts } from "../../actions/productAction";
+import productAction from "../../actions/productAction";
 import Loader from "../layout/Loader/Loader";
 import ProductCard from "./ProductCard";
 import Metadata from "../layout/Metadata";
@@ -52,12 +52,14 @@ const Products = () => {
   };
 
   useEffect(() => {
-    dispatch(getProducts(keyword, currentPage, price, category, ratings));
+    dispatch(
+      productAction.getProducts(keyword, currentPage, price, category, ratings)
+    );
   }, [dispatch, keyword, currentPage, price, category, ratings]);
 
   if (error) {
     alert.error(error);
-    dispatch(clearErrors());
+    dispatch(productAction.clearErrors());
   }
 
   let count = filteredProductsCount;

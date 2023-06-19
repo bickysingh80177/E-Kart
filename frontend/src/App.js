@@ -18,7 +18,7 @@ import store from "./store";
 import userAction from "./actions/userAction";
 import UserOptions from "./components/layout/Header/UserOptions";
 import Profile from "./components/User/Profile";
-// import ProtectedRoute from "./components/Route/ProtectedRoute";
+import ProtectedRoute from "./components/Route/ProtectedRoute";
 import UpdateProfile from "./components/User/UpdateProfile";
 import UpdatePassword from "./components/User/UpdatePassword";
 import ForgotPassword from "./components/User/ForgotPassword";
@@ -30,7 +30,9 @@ import Payment from "./components/Cart/Payment";
 import OrderSuccess from "./components/Cart/OrderSuccess";
 import MyOrders from "./components/Order/MyOrders";
 import OrderDetails from "./components/Order/OrderDetails";
-import Dashboard from "./components/admin/Dashboard.js";
+import Dashboard from "./components/Admin/Dashboard";
+import ProductList from "./components/Admin/ProductList";
+import NotFoundPage from "./components/NotFoundPage.js";
 
 function App() {
   // const navigate = useNavigate();
@@ -51,7 +53,7 @@ function App() {
 
     store.dispatch(userAction.loadUser());
     getStripeApiKey();
-  }, []);
+  }, [stripeApiKey]);
 
   return (
     <div>
@@ -66,6 +68,11 @@ function App() {
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/login" element={<LoginRegister />} />
           <Route exact path="/account" element={<Profile />} />
+          {/* <Route
+            exact
+            path="/account"
+            element={<ProtectedRoute component={<Profile />} />}
+          /> */}
           <Route exact path="/profile/update" element={<UpdateProfile />} />
           <Route exact path="/password/update" element={<UpdatePassword />} />
           <Route exact path="/password/forgot" element={<ForgotPassword />} />
@@ -91,8 +98,26 @@ function App() {
           <Route exact path="/orders" element={<MyOrders />} />
           <Route exact path="/order/confirm" element={<ConfirmOrder />} />
           <Route exact path="/orders/:id" element={<OrderDetails />} />
+
           {/* admin routes */}
-          <Route exact path="/admin/dashboard" element={<Dashboard />} />
+          {/* <Route
+            exact
+            path="/admin/dashboard"
+            element={<Dashboard role={user?.role} />}
+          /> */}
+          <Route
+            exact
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute isAdmin={true} component={<Dashboard />} />
+            }
+          />
+          <Route
+            exact
+            path="/admin/products"
+            element={<ProductList role={user?.role} />}
+          />
+          {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>
         <Footer />
       </BrowserRouter>

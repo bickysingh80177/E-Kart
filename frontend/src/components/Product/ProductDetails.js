@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
 
 import "./ProductDetails.css";
-import { clearErrors, getProductDetails } from "../../actions/productAction";
+import productAction from "../../actions/productAction";
 import ReviewCard from "./ReviewCard.js";
 import Loader from "../layout/Loader/Loader";
 import Metadata from "../layout/Metadata";
@@ -74,7 +74,7 @@ const ProductDetails = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(clearErrors());
+      dispatch(productAction.clearErrors());
     }
 
     if (reviewError) {
@@ -87,7 +87,7 @@ const ProductDetails = () => {
       dispatch({ type: reviewConstants.NEW_REVIEW_RESET });
     }
 
-    dispatch(getProductDetails(id));
+    dispatch(productAction.getProductDetails(id));
   }, [dispatch, id, alert, reviewError, success, error]);
 
   const options = {

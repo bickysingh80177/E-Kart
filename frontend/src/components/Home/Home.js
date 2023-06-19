@@ -6,7 +6,7 @@ import { useAlert } from "react-alert";
 import "./Home.css";
 import ProductCard from "../Product/ProductCard.js";
 import Metadata from "../layout/Metadata";
-import { clearErrors, getProducts } from "../../actions/productAction";
+import productAction from "../../actions/productAction";
 import Loader from "../layout/Loader/Loader";
 
 const Home = () => {
@@ -15,12 +15,12 @@ const Home = () => {
   const { loading, products, error } = useSelector((state) => state.products);
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(productAction.getProducts());
   }, [dispatch]);
 
   if (error) {
     alert.error(error);
-    dispatch(clearErrors());
+    dispatch(productAction.clearErrors());
   }
 
   return (

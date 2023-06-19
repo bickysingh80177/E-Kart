@@ -46,6 +46,7 @@ const Login_Register = () => {
 
   useEffect(() => {
     if (error) {
+      console.log(error);
       alert.error(error);
       dispatch(userAction.clearError);
     }
@@ -80,8 +81,8 @@ const Login_Register = () => {
 
   const loginSubmit = (e) => {
     e.preventDefault();
-    // console.log(loginEmail, loginPassword);
     dispatch(userAction.userLogin(loginEmail, loginPassword));
+    navigate("/products");
   };
 
   const registerSubmit = (e) => {
@@ -94,6 +95,7 @@ const Login_Register = () => {
     myForm.set("avatar", avatar);
     dispatch(userAction.userRegister(myForm));
     alert.success(`${name} registered successfully`);
+    navigate("/products");
   };
 
   const registerDataChange = (e) => {
