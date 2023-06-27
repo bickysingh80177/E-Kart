@@ -33,6 +33,7 @@ import OrderDetails from "./components/Order/OrderDetails";
 import Dashboard from "./components/Admin/Dashboard";
 import ProductList from "./components/Admin/ProductList";
 import NotFoundPage from "./components/NotFoundPage.js";
+import NewProduct from "./components/Admin/NewProduct";
 
 function App() {
   // const navigate = useNavigate();
@@ -115,7 +116,17 @@ function App() {
           <Route
             exact
             path="/admin/products"
-            element={<ProductList role={user?.role} />}
+            element={
+              // <ProductList role={user?.role} />
+              <ProtectedRoute isAdmin={true} component={<ProductList />} />
+            }
+          />
+          <Route
+            exact
+            path="/admin/product"
+            element={
+              <ProtectedRoute isAdmin={true} component={<NewProduct />} />
+            }
           />
           {/* <Route path="*" element={<NotFoundPage />} /> */}
         </Routes>

@@ -14,6 +14,9 @@ import reviewReducer from "./reducers/reviewReducer";
 
 const reducer = combineReducers({
   products: productReducer.allProductsReducer,
+  adminProducts: productReducer.adminProducts,
+  newProduct: productReducer.newProductReducer,
+  delProduct: productReducer.deleteProductReducer,
   productDetails: productReducer.productDetailReducer,
   user: userReducer.loginRegisterUser,
   profile: userReducer.profileReducer,

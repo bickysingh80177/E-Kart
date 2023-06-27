@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,16 +16,20 @@ import Sidebar from "./Sidebar";
 const ProductList = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const navigate = useNavigate();
 
-  const { error, products, loading } = useSelector((state) => state.products);
+  const { error, products, loading } = useSelector(
+    (state) => state.adminProducts
+  );
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.delProduct
+  );
 
-  useEffect(() => {
-    if (error) {
-      alert.error(error.message);
-      dispatch({ type: productAction.clearErrors });
-    }
-    dispatch({ type: productAction.getAdminProducts() });
-  }, [dispatch, error, alert]);
+  console.log(products);
+
+  const deleteProductHandler = (id) => {
+    dispatch(productAction.deleteProduct(id));
+  };
 
   const columns = [
     { field: "id", headerName: "Product Id", minwidth: 200, flex: 0.5 },
@@ -54,10 +58,10 @@ const ProductList = () => {
       renderCell: (params) => {
         return (
           <Fragment>
-            <Link to={`/admin/product/${params.getValue(params.id, "id")}`}>
+            <Link to={`/admin/product/${params.id}`}>
               <EditIcon />
             </Link>
-            <Button>
+            <Button onClick={deleteProductHandler(params.id)}>
               <DeleteIcon />
             </Button>
           </Fragment>
@@ -78,6 +82,25 @@ const ProductList = () => {
       });
     });
 
+  useEffect(() => {
+    if (error) {
+      alert.error(error.message);
+      dispatch(productAction.clearErrors());
+    }
+
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(productAction.clearErrors());
+    }
+
+    if (isDeleted) {
+      alert.success("Product Deleted Successfully");
+      navigate("/admin/dashboard");
+    }
+
+    dispatch(productAction.getAdminProducts());
+  }, [dispatch, error, alert, deleteError, isDeleted, navigate]);
+
   return (
     <Fragment>
       <Metadata title={"ALL PRODUCTS - ADMIN"} />
@@ -90,12 +113,13 @@ const ProductList = () => {
             <div className="productListContainer">
               <h1 id="productListHeading">All Products</h1>
               <DataGrid
-                columns={columns}
                 rows={rows}
+                columns={columns}
                 pageSize={10}
-                autoHeight
+                autoHeight={false}
                 disableSelectionOnClick
                 className="productListTable"
+                sx={{ overflowX: "scroll" }}
               />
             </div>
           </div>
@@ -106,21 +130,3 @@ const ProductList = () => {
 };
 
 export default ProductList;
-
-/* 
-1. JADE
-2. Grand Trontron
-3. Cordlife
-4. Hexagon
-5. PTS consulting solution
-6. atomberg
-
-yet to open
-1. Msys Technologies
-2. go make my trip
-3. Infoysis
-4. ITC infotech
-5. LTI Mindtree
-6. Oracle
-
-*/

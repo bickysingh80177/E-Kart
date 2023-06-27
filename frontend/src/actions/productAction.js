@@ -2,6 +2,62 @@ import axios from "axios";
 
 import productConstants from "../constants/productConstants";
 
+// get all products - Admin
+const getAdminProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: productConstants.ADMIN_PRODUCT_REQUESTS });
+    const { data } = await axios.get("/api/v1/admin/products");
+    dispatch({
+      type: productConstants.ADMIN_PRODUCT_SUCCESS,
+      payload: data.products,
+    });
+  } catch (err) {
+    dispatch({
+      type: productConstants.ADMIN_PRODUCT_FAIL,
+      payload: err.response.data.message,
+    });
+  }
+};
+
+// Create new product
+const createProduct = (productData) => async (dispatch) => {
+  try {
+    dispatch({ type: productConstants.NEW_PRODUCT_REQUESTS });
+    const config = {
+      "Content-Type": "application/json",
+    };
+    const { data } = await axios.post(
+      "/api/v1/admin/product/new",
+      productData,
+      config
+    );
+    dispatch({ type: productConstants.NEW_PRODUCT_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: productConstants.NEW_PRODUCT_FAIL,
+      error: error.response.data.message,
+    });
+  }
+};
+
+// Delete new product
+const deleteProduct = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: productConstants.DELETE_PRODUCT_REQUESTS });
+
+    const { data } = await axios.delete(`/api/v1/admin/product/${id}`);
+    dispatch({
+      type: productConstants.DELETE_PRODUCT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: productConstants.DELETE_PRODUCT_FAIL,
+      error: error.response.data.message,
+    });
+  }
+};
+
 // get all products
 const getProducts =
   (
@@ -38,24 +94,6 @@ const getProducts =
     }
   };
 
-// get all products - Admin
-const getAdminProducts = () => async (dispatch) => {
-  try {
-    dispatch({ type: productConstants.ADMIN_PRODUCT_REQUESTS });
-    const { data } = await axios.get("/api/v1/admin/products");
-    console.log("getAdminProducts", data);
-    dispatch({
-      type: productConstants.ADMIN_PRODUCT_SUCCESS,
-      payload: data.products,
-    });
-  } catch (err) {
-    dispatch({
-      type: productConstants.ADMIN_PRODUCT_FAIL,
-      payload: err.response.data.message,
-    });
-  }
-};
-
 // get product details
 const getProductDetails = (id) => async (dispatch) => {
   try {
@@ -86,8 +124,10 @@ const clearErrors = () => async (dispatch) => {
 };
 
 const productAction = {
-  getProducts,
   getAdminProducts,
+  createProduct,
+  deleteProduct,
+  getProducts,
   getProductDetails,
   clearErrors,
 };

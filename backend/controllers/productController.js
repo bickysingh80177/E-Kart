@@ -2,12 +2,34 @@ const model = require("../models/productModel");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/asyncError");
 const ApiFeatures = require("../utils/apiFeatures");
+const cloudinary = require("cloudinary");
 
 const Product = model.productModel;
 
 //Create product -- Admin
-const createProduct = catchAsyncErrors(async (req, res) => {
+const createProduct = catchAsyncErrors(async (req, res, next) => {
+  let images = [];
+  const imagesLinks = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "products",
+    });
+
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+  req.body.images = imagesLinks;
   req.body.user = req.user.id;
+  // console.log(req.body);
   const product = await Product.create(req.body);
   res.status(200).json({ success: true, product });
 });
@@ -32,7 +54,7 @@ const getAllProducts = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get All Products - Admin
-const getAdminProduct = catchAsyncErrors(async (req, res, next) => {
+const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
   const products = await Product.find();
   // console.log(products);
 
@@ -80,6 +102,10 @@ const deleteProduct = catchAsyncErrors(async (req, res, next) => {
 
   if (!product) return next(new ErrorHandler("Product Not Found", 404));
 
+  // deleting the images from Cloudinary
+  for (let i = 0; i < product.images.length; ++i) {
+    await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+  }
   await product.deleteOne();
   res.status(200).json({
     success: true,
@@ -175,7 +201,7 @@ const deleteProductReview = catchAsyncErrors(async (req, res, next) => {
 
 exports.productController = {
   getAllProducts,
-  getAdminProduct,
+  getAdminProducts,
   getProduct,
   createProduct,
   updateProduct,
