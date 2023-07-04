@@ -45,8 +45,9 @@ const getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const order = await Order.findById(id).populate("user", "name email");
 
-  if (!order)
+  if (!order) {
     return next(new ErrorHandler("Order with the given id is not found", 404));
+  }
 
   res.status(200).json({
     success: true,
@@ -88,8 +89,9 @@ const updateOrder = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const order = await Order.findById(id);
 
-  if (!order)
+  if (!order) {
     return next(new ErrorHandler("Order not found with given id", 404));
+  }
 
   if (order.orderStatus === "Delivered") {
     next(new ErrorHandler("You have already Delivered this produce", 400));
@@ -121,8 +123,9 @@ const deleteOrder = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const order = Order.findById(id);
 
-  if (!order)
+  if (!order) {
     return next(new ErrorHandler("Order not found with provided id", 404));
+  }
 
   await order.deleteOne();
 

@@ -9,32 +9,30 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import "./ProductList.css";
 import Metadata from "../layout/Metadata";
-import productAction from "../../actions/productAction";
 import Loader from "../layout/Loader/Loader";
 import Sidebar from "./Sidebar";
 import productConstants from "../../constants/productConstants";
+import orderAction from "../../actions/orderAction";
 
-const ProductList = () => {
+const OrderList = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
 
-  const { error, products, loading } = useSelector(
-    (state) => state.adminProducts
-  );
+  const { error, orders, loading } = useSelector((state) => state.allOrders);
   const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.delProduct
+    (state) => state.delOrder
   );
 
   useEffect(() => {
     if (error) {
       alert.error(error.message);
-      dispatch(productAction.clearErrors());
+      dispatch(orderAction.clearErrors());
     }
 
     if (deleteError) {
       alert.error(deleteError);
-      dispatch(productAction.clearErrors());
+      dispatch(orderAction.clearErrors());
     }
 
     if (isDeleted) {
@@ -43,11 +41,11 @@ const ProductList = () => {
       navigate("/admin/dashboard");
     }
 
-    dispatch(productAction.getAdminProducts());
+    dispatch(orderAction.getAllOrders());
   }, [dispatch, error, alert, deleteError, isDeleted, navigate]);
 
   const deleteProductHandler = (id) => {
-    dispatch(productAction.deleteProduct(id));
+    // dispatch(productAction.deleteProduct(id));
   };
 
   const columns = [
@@ -91,8 +89,8 @@ const ProductList = () => {
 
   const rows = [];
 
-  products &&
-    products.forEach((product) => {
+  orders &&
+    orders.forEach((product) => {
       rows.push({
         id: product._id,
         name: product.name,
@@ -103,7 +101,7 @@ const ProductList = () => {
 
   return (
     <Fragment>
-      <Metadata title={"ALL PRODUCTS - ADMIN"} />
+      <Metadata title={"ALL orders - ADMIN"} />
       {loading ? (
         <Loader />
       ) : (
@@ -129,4 +127,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default OrderList;

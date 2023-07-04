@@ -71,7 +71,7 @@ const newProductReducer = (state = { product: [] }, action) => {
   }
 };
 
-// delete product
+// update product
 const deleteProductReducer = (state = { product: [] }, action) => {
   switch (action.type) {
     case productConstants.DELETE_PRODUCT_REQUESTS:
@@ -111,11 +111,50 @@ const deleteProductReducer = (state = { product: [] }, action) => {
   }
 };
 
+// delete product
+const updateProductReducer = (state = { product: [] }, action) => {
+  switch (action.type) {
+    case productConstants.UPDATE_PRODUCT_REQUESTS:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case productConstants.UPDATE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isUpdated: action.payload,
+      };
+
+    case productConstants.UPDATE_PRODUCT_RESET:
+      return {
+        ...state,
+        isUpdated: false,
+      };
+
+    case productConstants.UPDATE_PRODUCT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case productConstants.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
 // User Operations
 const allProductsReducer = (state = { products: [] }, action) => {
   switch (action.type) {
     case productConstants.ALL_PRODUCT_REQUESTS:
-      console.log("ADMIN REQUEST");
       return {
         loading: true,
         products: [],
@@ -175,6 +214,7 @@ const productDetailReducer = (state = { product: {} }, action) => {
 const productReducer = {
   adminProducts,
   newProductReducer,
+  updateProductReducer,
   deleteProductReducer,
   allProductsReducer,
   productDetailReducer,

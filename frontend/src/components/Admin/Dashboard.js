@@ -24,7 +24,9 @@ const Dashboard = () => {
 
   products &&
     products.forEach((item) => {
-      if (item.stock === 0) outOfStocks += 1;
+      if (item.stock === 0) {
+        outOfStocks += 1;
+      }
     });
 
   const lineState = {

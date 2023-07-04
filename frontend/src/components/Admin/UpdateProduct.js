@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@mui/material";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -9,7 +9,6 @@ import StorageIcon from "@mui/icons-material/Storage";
 import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 
-import "./NewProduct.css";
 import productAction from "../../actions/productAction";
 import Metadata from "../layout/Metadata";
 import Sidebar from "./Sidebar";
@@ -29,12 +28,20 @@ const categories = [
   "T-shirts",
 ];
 
-const NewProduct = () => {
+const UpdateProduct = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
+  const params = useParams();
 
-  const { loading, error, success } = useSelector((state) => state.newProduct);
+  const productId = params.id;
+
+  const { loading, error, product } = useSelector(
+    (state) => state.productDetails
+  );
+  const { error: updateError, isUpdated } = useSelector(
+    (state) => state.updateProduct
+  );
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -42,9 +49,10 @@ const NewProduct = () => {
   const [category, setCategory] = useState("");
   const [Stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
 
-  const createProductSubmitHandler = (e) => {
+  const updateProductSubmitHandler = (e) => {
     e.preventDefault();
     const myForm = new FormData();
 
@@ -58,13 +66,14 @@ const NewProduct = () => {
       myForm.append("images", image);
     });
 
-    dispatch(productAction.createProduct(myForm));
+    dispatch(productAction.updateProduct(productId, myForm));
   };
 
-  const createProductImageChange = (e) => {
+  const updateProductImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImages([]);
     setImagePreview([]);
+    setOldImages([]);
 
     files.forEach((file) => {
       const reader = new FileReader();
@@ -80,30 +89,52 @@ const NewProduct = () => {
   };
 
   useEffect(() => {
+    if (product && product._id !== productId) {
+      dispatch(productAction.getProductDetails(productId));
+    } else {
+      setName(product.name);
+      setDescription(product.description);
+      setPrice(product.price);
+      setCategory(product.category);
+      setStock(product.stock);
+      setOldImages(product.images);
+    }
+    if (updateError) {
+      alert.error(updateError);
+      dispatch(productAction.clearErrors);
+    }
     if (error) {
       alert.error(error);
       dispatch(productAction.clearErrors);
     }
-
-    if (success) {
-      alert.success("Product Created Successfully");
-      dispatch({ type: productConstants.NEW_PRODUCT_RESET });
-      navigate("/admin/dashboard");
+    if (isUpdated) {
+      alert.success("Product Updated Successfully");
+      navigate("/admin/products");
+      dispatch({ type: productConstants.UPDATE_PRODUCT_RESET });
     }
-  }, [dispatch, alert, error, success, navigate]);
+  }, [
+    dispatch,
+    alert,
+    error,
+    updateError,
+    isUpdated,
+    product,
+    productId,
+    navigate,
+  ]);
 
   return (
     <Fragment>
-      <Metadata title="Create Product" />
+      <Metadata title="Update Product" />
       <div className="dashboard">
         <Sidebar />
         <div className="newProductContainer">
           <form
             className="createProductForm"
             encType="multipart/form-data"
-            onSubmit={createProductSubmitHandler}
+            onSubmit={updateProductSubmitHandler}
           >
-            <h1>Create Product</h1>
+            <h1>Update Product</h1>
             <div>
               <SpellcheckIcon />
               <input
@@ -120,6 +151,7 @@ const NewProduct = () => {
                 type="number"
                 placeholder="Price"
                 required
+                value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
             </div>
@@ -136,7 +168,10 @@ const NewProduct = () => {
             </div>
             <div>
               <AccountTreeIcon />
-              <select onChange={(e) => setCategory(e.target.value)}>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
                 <option value="">Choose Category</option>
                 {categories.map((cat) => (
                   <option key={cat} value={cat}>
@@ -151,6 +186,7 @@ const NewProduct = () => {
                 type="number"
                 placeholder="Stock"
                 required
+                value={Stock}
                 onChange={(e) => setStock(e.target.value)}
               />
             </div>
@@ -159,18 +195,24 @@ const NewProduct = () => {
                 type="file"
                 name="avatar"
                 accept="image/*"
-                onChange={createProductImageChange}
+                onChange={updateProductImageChange}
                 multiple
               />
             </div>
             <div id="createProductFormImage">
-              {imagePreview.map((image, index) => (
-                <img src={image} alt="Product Preview" key={index} />
-              ))}
+              {oldImages &&
+                oldImages.map((image, index) => (
+                  <img src={image.url} alt="Old Product Preview" key={index} />
+                ))}
             </div>
 
-            <Button id="createProductBtn" type="submit" disabled={!!loading}>
-              Create
+            <Button
+              id="createProductBtn"
+              type="submit"
+              disabled={!!loading}
+              // onClick={() => navigate("/admin/products")}
+            >
+              Update
             </Button>
           </form>
         </div>
@@ -179,4 +221,4 @@ const NewProduct = () => {
   );
 };
 
-export default NewProduct;
+export default UpdateProduct;

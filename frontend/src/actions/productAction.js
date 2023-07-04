@@ -40,6 +40,30 @@ const createProduct = (productData) => async (dispatch) => {
   }
 };
 
+// Update Product
+const updateProduct = (id, productData) => async (dispatch) => {
+  try {
+    dispatch({ type: productConstants.UPDATE_PRODUCT_REQUESTS });
+    const config = {
+      "Content-Type": "application/json",
+    };
+    const { data } = await axios.put(
+      `/api/v1/admin/product/${id}`,
+      productData,
+      config
+    );
+    dispatch({
+      type: productConstants.UPDATE_PRODUCT_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: productConstants.UPDATE_PRODUCT_FAIL,
+      error: error.response.data.message,
+    });
+  }
+};
+
 // Delete new product
 const deleteProduct = (id) => async (dispatch) => {
   try {
@@ -126,6 +150,7 @@ const clearErrors = () => async (dispatch) => {
 const productAction = {
   getAdminProducts,
   createProduct,
+  updateProduct,
   deleteProduct,
   getProducts,
   getProductDetails,

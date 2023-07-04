@@ -66,7 +66,9 @@ const userLogout = catchAsyncErrors(async (req, res, next) => {
 // Forget Password
 const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return next(new ErrorHandler("User Not found", 404));
+  if (!user) {
+    return next(new ErrorHandler("User Not found", 404));
+  }
 
   // Get reset password token
   const resetToken = user.getResetPasswordToken();
@@ -115,18 +117,19 @@ const resetPassword = catchAsyncErrors(async (req, res, next) => {
     },
   });
 
-  if (!user)
+  if (!user) {
     return next(
       new ErrorHandler(
         "Reset Password token is invalid or has been expired",
         400
       )
     );
+  }
 
   if (req.body.password !== req.body.confirmPassword) {
     return next(new ErrorHandler("Passwords did not match", 400));
   }
-  console.log(req.body.password);
+  // console.log(req.body.password);
   user.password = req.body.password;
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
@@ -136,7 +139,7 @@ const resetPassword = catchAsyncErrors(async (req, res, next) => {
 
 //Get User Detail
 const getUserDetail = catchAsyncErrors(async (req, res, next) => {
-  const id = req.user.id;
+  const { id } = req.user;
   const user = await User.findById(id);
   res.status(200).json({
     success: true,
@@ -146,7 +149,7 @@ const getUserDetail = catchAsyncErrors(async (req, res, next) => {
 
 // Update User password
 const updatePassword = catchAsyncErrors(async (req, res, next) => {
-  const id = req.user.id;
+  const { id } = req.user;
   const user = await User.findById(id).select("+password");
 
   const passwordMatch = await user.comparePassword(req.body.oldPassword);
@@ -166,7 +169,7 @@ const updatePassword = catchAsyncErrors(async (req, res, next) => {
 
 // Update User Profile
 const updateProfile = catchAsyncErrors(async (req, res, next) => {
-  const id = req.user.id;
+  const { id } = req.user;
   const newUserDetail = {
     name: req.body.name,
     email: req.body.email,
@@ -213,10 +216,11 @@ const getSingleUser = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const user = await User.findById(id);
 
-  if (!user)
+  if (!user) {
     return next(
       new ErrorHandler(`User does not exists with provided id - ${id}`)
     );
+  }
 
   res.status(200).json({
     success: true,
@@ -238,8 +242,6 @@ const updateUserRole = catchAsyncErrors(async (req, res, next) => {
     userFindAndModify: false,
   });
 
-  console.log(user);
-
   res.status(200).json({
     success: true,
     user,
@@ -251,8 +253,9 @@ const deleteUser = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const user = await User.findById(id);
 
-  if (!user)
+  if (!user) {
     return next(new ErrorHandler(`User doesn't exists with id- ${id}`, 404));
+  }
 
   await user.deleteOne();
 
