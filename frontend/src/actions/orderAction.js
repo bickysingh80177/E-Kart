@@ -6,8 +6,8 @@ import orderConstants from "../constants/orderConstants";
 const getAllOrders = () => async (dispatch) => {
   try {
     dispatch({ type: orderConstants.ALL_ORDERS_REQUEST });
-    const { data } = await axios("/api/v1/admin/orders");
-    dispatch({ type: orderConstants.ALL_ORDERS_SUCCESS, payload: data.orders });
+    const { data } = await axios.get("/api/v1/admin/orders");
+    dispatch({ type: orderConstants.ALL_ORDERS_SUCCESS, payload: data });
   } catch (err) {
     dispatch({
       type: orderConstants.ALL_ORDERS_FAIL,

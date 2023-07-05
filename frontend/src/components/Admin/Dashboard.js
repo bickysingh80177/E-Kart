@@ -11,6 +11,7 @@ import Sidebar from "./Sidebar";
 import NotAuthorized from "./NotAuthorized.js";
 import Loader from "../layout/Loader/Loader";
 import productAction from "../../actions/productAction";
+import orderAction from "../../actions/orderAction";
 
 Chart.register(...registerables);
 
@@ -19,6 +20,7 @@ const Dashboard = () => {
   // const navigate = useNavigate();
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.adminProducts);
+  const { orders } = useSelector((state) => state.allOrders);
 
   let outOfStocks = 0;
 
@@ -54,7 +56,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(productAction.getAdminProducts());
+    dispatch(orderAction.getAllOrders());
   }, [dispatch]);
+
+  console.log(orders);
 
   return (
     <Fragment>
@@ -76,7 +81,7 @@ const Dashboard = () => {
               </Link>
               <Link to="/admin/orders">
                 <p>Orders</p>
-                <p>4</p>
+                <p>{orders && orders.length}</p>
               </Link>
               <Link to="/admin/users">
                 <p>Users</p>

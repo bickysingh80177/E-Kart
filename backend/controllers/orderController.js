@@ -58,7 +58,6 @@ const getSingleOrder = catchAsyncErrors(async (req, res, next) => {
 // get logged in user orders
 const userOrder = catchAsyncErrors(async (req, res, next) => {
   const id = req.user._id;
-  //   console.log(id);
   const orders = await Order.find({ user: id }).populate("user", "name email");
 
   res.status(200).json({
@@ -69,9 +68,7 @@ const userOrder = catchAsyncErrors(async (req, res, next) => {
 
 // get all orders -- Admin
 const getAllOrders = catchAsyncErrors(async (req, res, next) => {
-  const { id } = req.params;
-  const orders = await Order.find(id).populate("user", "name email");
-
+  const orders = await Order.find();
   let totalAmount = 0;
   orders.forEach((order) => {
     totalAmount += order.totalPrice;

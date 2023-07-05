@@ -11,8 +11,8 @@ import "./ProductList.css";
 import Metadata from "../layout/Metadata";
 import Loader from "../layout/Loader/Loader";
 import Sidebar from "./Sidebar";
-import productConstants from "../../constants/productConstants";
 import orderAction from "../../actions/orderAction";
+import orderConstants from "../../constants/orderConstants";
 
 const OrderList = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,6 @@ const OrderList = () => {
   const { error: deleteError, isDeleted } = useSelector(
     (state) => state.delOrder
   );
-
   useEffect(() => {
     if (error) {
       alert.error(error.message);
@@ -36,33 +35,42 @@ const OrderList = () => {
     }
 
     if (isDeleted) {
-      alert.success("Product Deleted Successfully");
-      dispatch({ type: productConstants.DELETE_PRODUCT_RESET });
-      navigate("/admin/dashboard");
+      alert.success("Order Deleted Successfully");
+      dispatch({ type: orderConstants.DELETE_ORDER_RESET });
+      navigate("/admin/orders");
     }
 
     dispatch(orderAction.getAllOrders());
   }, [dispatch, error, alert, deleteError, isDeleted, navigate]);
 
-  const deleteProductHandler = (id) => {
-    // dispatch(productAction.deleteProduct(id));
+  const deleteOrderHandler = (id) => {
+    dispatch(orderAction.deleteOrder(id));
   };
 
   const columns = [
-    { field: "id", headerName: "Product Id", minwidth: 200, flex: 0.5 },
-    { field: "name", headerName: "Name", minwidth: 350, flex: 1 },
+    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
     {
-      field: "stock",
-      headerName: "Stock",
+      field: "status",
+      headerName: "Status",
+      minWidth: 150,
+      flex: 0.5,
+      // cellClassName: (params) => {
+      //   if (params.formattedValue === "Processing") return "greenColor";
+      //   else return "redColor";
+      // },
+    },
+    {
+      field: "itemsQty",
+      headerName: "Item Qty",
       type: "number",
-      minwidth: 150,
+      minWidth: 150,
       flex: 0.3,
     },
     {
-      field: "price",
-      headerName: "Price",
+      field: "amount",
+      headerName: "Amount",
       type: "number",
-      minwidth: 270,
+      minWidth: 270,
       flex: 0.5,
     },
     {
@@ -75,10 +83,10 @@ const OrderList = () => {
       renderCell: (params) => {
         return (
           <Fragment>
-            <Link to={`/admin/product/${params.id}`}>
+            <Link to={`/admin/order/${params.id}`}>
               <EditIcon />
             </Link>
-            <Button onClick={() => deleteProductHandler(params.id)}>
+            <Button onClick={() => deleteOrderHandler(params.id)}>
               <DeleteIcon />
             </Button>
           </Fragment>
@@ -90,18 +98,19 @@ const OrderList = () => {
   const rows = [];
 
   orders &&
-    orders.forEach((product) => {
+    orders.forEach((item) => {
       rows.push({
-        id: product._id,
-        name: product.name,
-        stock: product.stock,
-        price: product.price,
+        id: item._id,
+        name: item.name,
+        itemQty: item.orderItems.length,
+        status: item.orderStatus,
+        amount: item.totalPrice,
       });
     });
 
   return (
     <Fragment>
-      <Metadata title={"ALL orders - ADMIN"} />
+      <Metadata title={"ALL Orders -- ADMIN"} />
       {loading ? (
         <Loader />
       ) : (

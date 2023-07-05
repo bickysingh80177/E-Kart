@@ -13,15 +13,17 @@ import orderReducer from "./reducers/orderReducer";
 import reviewReducer from "./reducers/reviewReducer";
 
 const reducer = combineReducers({
-  products: productReducer.allProductsReducer,
+  // Admin Reducers
   adminProducts: productReducer.adminProducts,
   newProduct: productReducer.newProductReducer,
   updateProduct: productReducer.updateProductReducer,
   delProduct: productReducer.deleteProductReducer,
-  productDetails: productReducer.productDetailReducer,
   allOrders: orderReducer.allOrdersReducer,
   updateOrder: orderReducer.updateOrderReducer,
   delOrder: orderReducer.deleteOrderReducer,
+
+  products: productReducer.allProductsReducer,
+  productDetails: productReducer.productDetailReducer,
   user: userReducer.loginRegisterUser,
   profile: userReducer.profileReducer,
   forgotPassword: userReducer.forgotPasswordReducer,
