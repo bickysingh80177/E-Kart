@@ -19,10 +19,12 @@ const OrderList = () => {
   const alert = useAlert();
   const navigate = useNavigate();
 
+  //   const data = useSelector((state) => state.allOrders);
   const { error, orders, loading } = useSelector((state) => state.allOrders);
   const { error: deleteError, isDeleted } = useSelector(
     (state) => state.delOrder
   );
+
   useEffect(() => {
     if (error) {
       alert.error(error.message);
@@ -36,7 +38,7 @@ const OrderList = () => {
 
     if (isDeleted) {
       alert.success("Order Deleted Successfully");
-      dispatch({ type: orderConstants.DELETE_ORDER_RESET });
+      dispatch({ type: orderConstants.DELETE_ORDERS_RESET });
       navigate("/admin/orders");
     }
 
@@ -54,13 +56,9 @@ const OrderList = () => {
       headerName: "Status",
       minWidth: 150,
       flex: 0.5,
-      // cellClassName: (params) => {
-      //   if (params.formattedValue === "Processing") return "greenColor";
-      //   else return "redColor";
-      // },
     },
     {
-      field: "itemsQty",
+      field: "itemQty",
       headerName: "Item Qty",
       type: "number",
       minWidth: 150,
@@ -118,7 +116,7 @@ const OrderList = () => {
           <div className="dashboard">
             <Sidebar />
             <div className="productListContainer">
-              <h1 id="productListHeading">All Products</h1>
+              <h1 id="productListHeading">All Orders</h1>
               <DataGrid
                 rows={rows}
                 columns={columns}
@@ -127,6 +125,14 @@ const OrderList = () => {
                 disableSelectionOnClick
                 className="productListTable"
                 sx={{ overflowX: "scroll" }}
+                getCellClassName={(params) => {
+                  const status = params.formattedValue === "Processing";
+                  if (status) {
+                    return "redColor";
+                  } else {
+                    return "greenColor";
+                  }
+                }}
               />
             </div>
           </div>

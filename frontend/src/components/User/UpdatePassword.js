@@ -78,8 +78,6 @@ const UpdatePassword = () => {
     <Fragment>
       {loading ? (
         <Loader />
-      ) : isAuthenticated === false ? (
-        navigate("/login")
       ) : (
         <Fragment>
           <Metadata title="Update Password" />

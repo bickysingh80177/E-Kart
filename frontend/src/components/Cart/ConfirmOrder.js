@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
@@ -12,7 +12,7 @@ const ConfirmOrder = () => {
   const navigate = useNavigate();
 
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
-  const { user, isAuthenticated, loading } = useSelector((state) => state.user);
+  const { user, loading } = useSelector((state) => state.user);
 
   const address = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.pinCode}, ${shippingInfo.country}`;
   const subtotal = cartItems.reduce(
@@ -40,8 +40,6 @@ const ConfirmOrder = () => {
       <MetaData title={"Confirm Order"} />
       {loading ? (
         <Loader />
-      ) : isAuthenticated === false ? (
-        navigate("/login")
       ) : (
         <Fragment>
           <CheckoutSteps activeStep={1} />

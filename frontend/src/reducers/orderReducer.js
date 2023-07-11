@@ -2,7 +2,7 @@ import orderConstants from "../constants/orderConstants";
 
 // Admin
 const allOrdersReducer = (state = { orders: [] }, action) => {
-  switch (state.action) {
+  switch (action.type) {
     case orderConstants.ALL_ORDERS_REQUEST:
       return {
         loading: true,

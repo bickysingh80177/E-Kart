@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "./Profile.css";
@@ -7,16 +7,12 @@ import Metadata from "../layout/Metadata";
 import Loader from "../layout/Loader/Loader";
 
 const Profile = () => {
-  const navigate = useNavigate();
-
-  const { user, loading, isAuthenticated } = useSelector((state) => state.user);
+  const { user, loading } = useSelector((state) => state.user);
 
   return (
     <Fragment>
       {loading ? (
         <Loader />
-      ) : isAuthenticated === false ? (
-        navigate("/login")
       ) : (
         <Fragment>
           <Metadata title={`${user?.name}'s Profile`} />

@@ -59,8 +59,6 @@ const Dashboard = () => {
     dispatch(orderAction.getAllOrders());
   }, [dispatch]);
 
-  console.log(orders);
-
   return (
     <Fragment>
       {/* {role === "admin" ? ( */}

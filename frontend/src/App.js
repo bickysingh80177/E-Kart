@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import webFont from "webfontloader";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -36,6 +36,8 @@ import NotFoundPage from "./components/NotFoundPage.js";
 import NewProduct from "./components/Admin/NewProduct";
 import UpdateProduct from "./components/Admin/UpdateProduct";
 import OrderList from "./components/Admin/OrderList";
+import ProcessOrder from "./components/Admin/ProcessOrder";
+import UsersList from "./components/Admin/UsersList.js";
 
 function App() {
   // const navigate = useNavigate();
@@ -67,17 +69,28 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route exact path="/product/:id" element={<ProductDetails />} />
           <Route exact path="/products" element={<Products />} />
-          <Route path="/products/:keyword" element={<Products />} />
+          <Route exact path="/products/:keyword" element={<Products />} />
           <Route exact path="/search" element={<Search />} />
           <Route exact path="/login" element={<LoginRegister />} />
-          <Route exact path="/account" element={<Profile />} />
-          {/* <Route
+          <Route
             exact
             path="/account"
             element={<ProtectedRoute component={<Profile />} />}
-          /> */}
-          <Route exact path="/profile/update" element={<UpdateProfile />} />
-          <Route exact path="/password/update" element={<UpdatePassword />} />
+          />
+          <Route
+            exact
+            path="/profile/update"
+            element={<ProtectedRoute component={<UpdateProfile />} />}
+          />
+          <Route
+            exact
+            path="/password/update"
+            element={
+              <ProtectedRoute
+                component={<ProtectedRoute component={<UpdatePassword />} />}
+              />
+            }
+          />
           <Route exact path="/password/forgot" element={<ForgotPassword />} />
           <Route
             exact
@@ -85,7 +98,11 @@ function App() {
             element={<ResetPassword />}
           />
           <Route exact path="/cart" element={<Cart />} />
-          <Route exact path="/shipping" element={<Shipping />} />
+          <Route
+            exact
+            path="/shipping"
+            element={<ProtectedRoute component={<Shipping />} />}
+          />
           {stripeApiKey && (
             <Route
               exact
@@ -97,17 +114,28 @@ function App() {
               }
             />
           )}
-          <Route exact path="/success" element={<OrderSuccess />} />
-          <Route exact path="/orders" element={<MyOrders />} />
-          <Route exact path="/order/confirm" element={<ConfirmOrder />} />
-          <Route exact path="/orders/:id" element={<OrderDetails />} />
+          <Route
+            exact
+            path="/success"
+            element={<ProtectedRoute component={<OrderSuccess />} />}
+          />
+          <Route
+            exact
+            path="/orders"
+            element={<ProtectedRoute component={<MyOrders />} />}
+          />
+          <Route
+            exact
+            path="/order/confirm"
+            element={<ProtectedRoute component={<ConfirmOrder />} />}
+          />
+          <Route
+            exact
+            path="/orders/:id"
+            element={<ProtectedRoute component={<OrderDetails />} />}
+          />
 
           {/* admin routes */}
-          {/* <Route
-            exact
-            path="/admin/dashboard"
-            element={<Dashboard role={user?.role} />}
-          /> */}
           <Route
             exact
             path="/admin/dashboard"
@@ -141,6 +169,20 @@ function App() {
             path="/admin/orders"
             element={
               <ProtectedRoute isAdmin={true} component={<OrderList />} />
+            }
+          />
+          <Route
+            exact
+            path="/admin/order/:id"
+            element={
+              <ProtectedRoute isAdmin={true} component={<ProcessOrder />} />
+            }
+          />
+          <Route
+            exact
+            path="/admin/users"
+            element={
+              <ProtectedRoute isAdmin={true} component={<UsersList />} />
             }
           />
           {/* <Route path="*" element={<NotFoundPage />} /> */}

@@ -94,15 +94,18 @@ const updateOrder = catchAsyncErrors(async (req, res, next) => {
     next(new ErrorHandler("You have already Delivered this produce", 400));
   }
 
-  order.orderItems.forEach(async (o) => {
-    await updateStock(o.product, o.quantity);
-  });
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (o) => {
+      await updateStock(o.product, o.quantity);
+    });
+  }
 
   order.orderStatus = req.body.status;
 
   if (req.body.status === "Delivered") {
     order.deliveredAt = Date.now();
   }
+
   await order.save({ validateBeforeSave: false });
   res.status(200).json({
     success: true,

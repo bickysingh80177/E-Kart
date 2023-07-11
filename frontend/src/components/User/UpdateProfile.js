@@ -70,8 +70,6 @@ const UpdateProfile = () => {
     <Fragment>
       {loading ? (
         <Loader />
-      ) : isAuthenticated === false ? (
-        navigate("/login")
       ) : (
         <Fragment>
           <Metadata title="Update Profile" />

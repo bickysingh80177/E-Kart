@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { useAlert } from "react-alert";
@@ -18,10 +18,8 @@ const OrderDetails = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const params = useParams();
-  const navigate = useNavigate();
 
   const { order, error, loading } = useSelector((state) => state.orderDetails);
-  const { isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (error) {
@@ -36,8 +34,6 @@ const OrderDetails = () => {
       <Metadata title="Order Detail" />
       {loading ? (
         <Loader />
-      ) : isAuthenticated === false ? (
-        navigate("/login")
       ) : (
         <Fragment>
           <div className="orderDetailsPage">

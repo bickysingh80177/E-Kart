@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -12,11 +12,10 @@ import Loader from "../layout/Loader/Loader";
 import MetaData from "../layout/Metadata";
 
 const MyOrders = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const { loading, error, orders } = useSelector((state) => state.myOrders);
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
@@ -86,8 +85,6 @@ const MyOrders = () => {
       <MetaData title={`${user?.name} - Order`} />
       {loading ? (
         <Loader />
-      ) : isAuthenticated === false ? (
-        navigate("/login")
       ) : (
         <Fragment>
           <div className="myOrdersPage">

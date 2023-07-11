@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import HomeIcon from "@mui/icons-material/Home";
@@ -20,7 +20,7 @@ const Shipping = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
-  const { isAuthenticated, loading } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.user);
   const { shippingInfo } = useSelector((state) => state.cart);
 
   const [address, setAddress] = useState(shippingInfo.address || "");
@@ -55,8 +55,6 @@ const Shipping = () => {
       <Metadata title="Shipping Details" />
       {loading ? (
         <Loader />
-      ) : isAuthenticated === false ? (
-        navigate("/login")
       ) : (
         <Fragment>
           <CheckoutSteps activeStep={0} />

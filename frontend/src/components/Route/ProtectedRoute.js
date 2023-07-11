@@ -8,11 +8,9 @@ const ProtectedRoute = ({ isAdmin = false, component }) => {
   if (isAuthenticated === false) {
     navigate("/login");
     return null;
-  } else {
-    if (isAdmin === true && user.role !== "admin") {
-      navigate("/account");
-      return null;
-    }
+  } else if (isAdmin === true && user.role !== "admin") {
+    navigate("/account");
+    return null;
   }
 
   return component;
