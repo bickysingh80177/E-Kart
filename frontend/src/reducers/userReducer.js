@@ -67,6 +67,8 @@ const profileReducer = (state = {}, action) => {
   switch (action.type) {
     case userConstants.UPDATE_PROFILE_REQUEST:
     case userConstants.UPDATE_PASSWORD_REQUEST:
+    case userConstants.UPDATE_USER_REQUEST:
+    case userConstants.DELETE_USER_REQUEST:
       return {
         ...state,
         loading: true,
@@ -74,27 +76,43 @@ const profileReducer = (state = {}, action) => {
 
     case userConstants.UPDATE_PROFILE_SUCCESS:
     case userConstants.UPDATE_PASSWORD_SUCCESS:
+    case userConstants.UPDATE_USER_SUCCESS:
       return {
-        loading: false,
         ...state,
-        isUpdated: action.payload,
+        loading: false,
+        isUpdated: action.payload.success,
+        message: action.payload.message,
+      };
+
+    case userConstants.DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isDeleted: true,
       };
 
     case userConstants.UPDATE_PROFILE_FAIL:
     case userConstants.UPDATE_PASSWORD_FAIL:
+    case userConstants.UPDATE_USER_FAIL:
+    case userConstants.DELETE_USER_FAIL:
       return {
         ...state,
         loading: false,
-        isUpdated: false,
         error: action.payload,
       };
 
     case userConstants.UPDATE_PROFILE_RESET:
     case userConstants.UPDATE_PASSWORD_RESET:
+    case userConstants.UPDATE_USER_RESET:
       return {
         ...state,
-        loading: false,
         isUpdated: false,
+      };
+
+    case userConstants.DELETE_USER_RESET:
+      return {
+        ...state,
+        isDeleted: false,
       };
 
     case userConstants.CLEAR_ERRORS:
@@ -151,10 +169,79 @@ const forgotPasswordReducer = (state = {}, action) => {
   }
 };
 
+// Admin Reducers
+const allUsersReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case userConstants.ALL_USER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case userConstants.ALL_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        users: action.payload,
+      };
+
+    case userConstants.ALL_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case userConstants.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const userDetailsReducer = (state = { user: {} }, action) => {
+  switch (action.type) {
+    case userConstants.USER_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case userConstants.USER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload,
+      };
+
+    case userConstants.USER_DETAILS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case userConstants.CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const userReducer = {
   loginRegisterUser,
   profileReducer,
   forgotPasswordReducer,
+  // admin reducers
+  allUsersReducer,
+  userDetailsReducer,
 };
 
 export default userReducer;

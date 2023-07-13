@@ -144,7 +144,7 @@ const Shipping = () => {
                   type="submit"
                   value="Continue"
                   className="shippingBtn"
-                  disabled={state ? false : true}
+                  disabled={!state}
                 />
               </form>
             </div>

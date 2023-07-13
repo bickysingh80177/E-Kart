@@ -21,6 +21,8 @@ const reducer = combineReducers({
   allOrders: orderReducer.allOrdersReducer,
   updateOrder: orderReducer.updateOrderReducer,
   delOrder: orderReducer.deleteOrderReducer,
+  allUsers: userReducer.allUsersReducer,
+  userDetails: userReducer.userDetailsReducer,
 
   products: productReducer.allProductsReducer,
   productDetails: productReducer.productDetailReducer,

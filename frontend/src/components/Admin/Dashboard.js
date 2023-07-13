@@ -12,6 +12,7 @@ import NotAuthorized from "./NotAuthorized.js";
 import Loader from "../layout/Loader/Loader";
 import productAction from "../../actions/productAction";
 import orderAction from "../../actions/orderAction";
+import userAction from "../../actions/userAction";
 
 Chart.register(...registerables);
 
@@ -21,6 +22,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.adminProducts);
   const { orders } = useSelector((state) => state.allOrders);
+  const { users } = useSelector((state) => state.allUsers);
 
   let outOfStocks = 0;
 
@@ -57,11 +59,11 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(productAction.getAdminProducts());
     dispatch(orderAction.getAllOrders());
+    dispatch(userAction.getAllUsers());
   }, [dispatch]);
 
   return (
     <Fragment>
-      {/* {role === "admin" ? ( */}
       <div className="dashboard">
         <Sidebar />
         <div className="dashboardContainer">
@@ -83,7 +85,7 @@ const Dashboard = () => {
               </Link>
               <Link to="/admin/users">
                 <p>Users</p>
-                <p>2</p>
+                <p>{users && users.length}</p>
               </Link>
             </div>
           </div>
@@ -95,9 +97,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      {/* ) : (
-        navigate("/account")
-      )} */}
     </Fragment>
   );
 };

@@ -3,6 +3,69 @@ import { Navigate } from "react-router-dom";
 
 import userConstants from "../constants/userConstants";
 
+// get all users -- Admin
+const getAllUsers = () => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.ALL_USER_REQUEST });
+    const { data } = await axios.get("/api/v1/admin/users");
+    dispatch({ type: userConstants.ALL_USER_SUCCESS, payload: data.users });
+  } catch (err) {
+    dispatch({
+      type: userConstants.ALL_USER_FAIL,
+      payload: err.response.data.message,
+    });
+  }
+};
+
+// get user details -- Admin
+const getUserDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.USER_DETAILS_REQUEST });
+    const { data } = await axios.get(`/api/v1/admin/user/${id}`);
+    dispatch({
+      type: userConstants.USER_DETAILS_SUCCESS,
+      payload: data.success,
+    });
+  } catch (err) {
+    dispatch({
+      type: userConstants.USER_DETAILS_FAIL,
+      payload: err.response.data.message,
+    });
+  }
+};
+
+// update user details -- Admin
+const updateUser = (id, userData) => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.UPDATE_USER_REQUEST });
+    const config = { "Content-Type": "application/json" };
+    const { data } = await axios.put(`/api/v1/admin/${id}`, userData, config);
+    dispatch({ type: userConstants.UPDATE_PASSWORD_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: userConstants.UPDATE_USER_FAIL,
+      payload: err.response.data.message,
+    });
+  }
+};
+
+// delete user -- Admin
+const deleteUser = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: userConstants.DELETE_USER_REQUEST });
+    const { data } = await axios.delete(`/api/v1/admin/user/${id}`);
+    dispatch({
+      type: userConstants.DELETE_USER_SUCCESS,
+      payload: data,
+    });
+  } catch (err) {
+    dispatch({
+      type: userConstants.DELETE_USER_FAIL,
+      payload: err.request.data.message,
+    });
+  }
+};
+
 // login
 const userLogin = (email, password) => async (dispatch) => {
   try {
@@ -168,6 +231,12 @@ const clearError = () => async (dispatch) => {
 };
 
 const userAction = {
+  // Admin actions
+  getAllUsers,
+  getUserDetails,
+  updateUser,
+  deleteUser,
+
   userLogin,
   userRegister,
   loadUser,

@@ -37,7 +37,8 @@ import NewProduct from "./components/Admin/NewProduct";
 import UpdateProduct from "./components/Admin/UpdateProduct";
 import OrderList from "./components/Admin/OrderList";
 import ProcessOrder from "./components/Admin/ProcessOrder";
-import UsersList from "./components/Admin/UsersList.js";
+import UsersList from "./components/Admin/UsersList";
+import UpdateUser from "./components/Admin/UpdateUser";
 
 function App() {
   // const navigate = useNavigate();
@@ -85,11 +86,7 @@ function App() {
           <Route
             exact
             path="/password/update"
-            element={
-              <ProtectedRoute
-                component={<ProtectedRoute component={<UpdatePassword />} />}
-              />
-            }
+            element={<ProtectedRoute component={<UpdatePassword />} />}
           />
           <Route exact path="/password/forgot" element={<ForgotPassword />} />
           <Route
@@ -97,7 +94,11 @@ function App() {
             path="/password/reset/:token"
             element={<ResetPassword />}
           />
-          <Route exact path="/cart" element={<Cart />} />
+          <Route
+            exact
+            path="/cart"
+            element={<ProtectedRoute component={<Cart />} />}
+          />
           <Route
             exact
             path="/shipping"
@@ -183,6 +184,13 @@ function App() {
             path="/admin/users"
             element={
               <ProtectedRoute isAdmin={true} component={<UsersList />} />
+            }
+          />
+          <Route
+            exact
+            path="/admin/user/:id"
+            element={
+              <ProtectedRoute isAdmin={true} component={<UpdateUser />} />
             }
           />
           {/* <Route path="*" element={<NotFoundPage />} /> */}

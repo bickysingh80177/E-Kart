@@ -15,13 +15,17 @@ const Cart = () => {
 
   const increaseQty = (id, quantity, stock) => {
     const newQty = quantity + 1;
-    if (stock < newQty) return;
+    if (stock < newQty) {
+      return;
+    }
     dispatch(cartAction.addItemsToCart(id, newQty));
   };
 
   const decreaseQty = (id, quantity) => {
     const newQty = quantity - 1;
-    if (newQty < 1) return;
+    if (newQty < 1) {
+      return;
+    }
     dispatch(cartAction.addItemsToCart(id, newQty));
   };
 
