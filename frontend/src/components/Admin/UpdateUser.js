@@ -108,7 +108,6 @@ const UpdateUser = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-
               <div>
                 <VerifiedUserIcon />
                 <select value={role} onChange={(e) => setRole(e.target.value)}>

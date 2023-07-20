@@ -24,7 +24,7 @@ const getUserDetails = (id) => async (dispatch) => {
     const { data } = await axios.get(`/api/v1/admin/user/${id}`);
     dispatch({
       type: userConstants.USER_DETAILS_SUCCESS,
-      payload: data.success,
+      payload: data.user,
     });
   } catch (err) {
     dispatch({

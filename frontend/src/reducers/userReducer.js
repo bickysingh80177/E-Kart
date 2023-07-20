@@ -221,6 +221,7 @@ const userDetailsReducer = (state = { user: {} }, action) => {
     case userConstants.USER_DETAILS_FAIL:
       return {
         ...state,
+        loading: false,
         error: action.payload,
       };
 
