@@ -39,6 +39,7 @@ import OrderList from "./components/Admin/OrderList";
 import ProcessOrder from "./components/Admin/ProcessOrder";
 import UsersList from "./components/Admin/UsersList";
 import UpdateUser from "./components/Admin/UpdateUser";
+import ProductReview from "./components/Admin/ProductReview";
 
 function App() {
   // const navigate = useNavigate();
@@ -191,6 +192,13 @@ function App() {
             path="/admin/user/:id"
             element={
               <ProtectedRoute isAdmin={true} component={<UpdateUser />} />
+            }
+          />
+          <Route
+            exact
+            path="/admin/reviews"
+            element={
+              <ProtectedRoute isAdmin={true} component={<ProductReview />} />
             }
           />
           {/* <Route path="*" element={<NotFoundPage />} /> */}

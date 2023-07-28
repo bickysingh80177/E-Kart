@@ -39,7 +39,11 @@ const updateUser = (id, userData) => async (dispatch) => {
   try {
     dispatch({ type: userConstants.UPDATE_USER_REQUEST });
     const config = { "Content-Type": "application/json" };
-    const { data } = await axios.put(`/api/v1/admin/${id}`, userData, config);
+    const { data } = await axios.put(
+      `/api/v1/admin/user/${id}`,
+      userData,
+      config
+    );
     dispatch({ type: userConstants.UPDATE_PASSWORD_SUCCESS, payload: data });
   } catch (err) {
     dispatch({
@@ -61,7 +65,7 @@ const deleteUser = (id) => async (dispatch) => {
   } catch (err) {
     dispatch({
       type: userConstants.DELETE_USER_FAIL,
-      payload: err.request.data.message,
+      payload: err.response.data.message,
     });
   }
 };

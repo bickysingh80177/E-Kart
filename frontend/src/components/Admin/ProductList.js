@@ -51,20 +51,20 @@ const ProductList = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "Product Id", minwidth: 200, flex: 0.5 },
-    { field: "name", headerName: "Name", minwidth: 350, flex: 1 },
+    { field: "id", headerName: "Product Id", minWidth: 200, flex: 0.5 },
+    { field: "name", headerName: "Name", minWidth: 350, flex: 1 },
     {
       field: "stock",
       headerName: "Stock",
       type: "number",
-      minwidth: 150,
+      minWidth: 150,
       flex: 0.3,
     },
     {
       field: "price",
       headerName: "Price",
       type: "number",
-      minwidth: 270,
+      minWidth: 270,
       flex: 0.5,
     },
     {
@@ -72,7 +72,7 @@ const ProductList = () => {
       headerName: "Actions",
       type: "number",
       sortable: false,
-      minwidth: 150,
+      minWidth: 150,
       flex: 0.3,
       renderCell: (params) => {
         return (

@@ -236,7 +236,7 @@ const updateUserRole = catchAsyncErrors(async (req, res, next) => {
     role: req.body.role,
   };
 
-  const user = await User.findByIdAndUpdate(req.params.id, newData, {
+  await User.findByIdAndUpdate(req.params.id, newData, {
     new: true,
     runValidators: true,
     userFindAndModify: false,
@@ -244,7 +244,7 @@ const updateUserRole = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    user,
+    // user,
   });
 });
 
@@ -264,6 +264,7 @@ const deleteUser = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    message: "User Deleted Successfully!",
   });
 });
 
